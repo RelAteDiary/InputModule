@@ -6,4 +6,6 @@ unique_ids:
     Form1: BDNIX6WQ65PGRO6EKPVWPPF4R4C6KRXL
   modules: {}
   scripts: {}
-  server_modules: {}
+  server_modules:
+    ServerModule1: '1737087899123265200077491.0339'
+    emailModule: '1737086514789708048933431.3802'
