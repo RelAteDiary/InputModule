@@ -55,6 +55,10 @@ runtime_options:
   server_spec: {base: python310-minimal}
   server_version: python3-sandbox
   version: 2
+secrets:
+  openai_api_key:
+    type: secret
+    value: {AIZBTGSOYXJUYPQ7: fWhVMUa/0/WJWmfumgKnfmlOqZTCUYZ7pNYwO1LW5i3jlM4bgDWBTYV6IRuXcIYGcrFjXcFtLN1dZ7py8qLtniFtcAjI1QF8BUX1tW9tsPZy1YR1VDyUqlDmqFu6VVNKtbWOSSbK0tGdRYd/hBVgD0+PJNIomGZhz/dnJLPsbUjIL7uJQsq9oZTepCRLNqicTLcFiuI9Ix0znUA47iLSai5d1xhGGm4LV8vIo41zTP/luM8pYYLwbV3zimxBojESCWYRpqFijY6fvS6XVYPnmXAbYJb4+0dOM0zM6TZbDXdtf9CJl4t90eB6zRagTBf/xyRlvBfcPcv1gDgbn8saJxhdMg==}
 services:
 - client_config: {}
   server_config: {}
@@ -71,5 +75,8 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/google.yml
+- client_config: {}
+  server_config: {}
+  source: /runtime/services/anvil/secrets.yml
 startup: {module: Form2, type: form}
 startup_form: null
