@@ -1,4 +1,4 @@
-from ._anvil_designer import Form1Template
+from ._anvil_designer import InTakeTemplate
 from anvil import *
 import anvil.google.auth, anvil.google.drive
 from anvil.google.drive import app_files
@@ -9,7 +9,7 @@ from anvil.tables import app_tables
 import anvil.server
 
 
-class Form1(Form1Template):
+class InTake(InTakeTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
