@@ -1,4 +1,4 @@
-from ._anvil_designer import Question1Template
+from ._anvil_designer import IntakeQuestionsTemplate
 from anvil import *
 import anvil.server
 import anvil.google.auth, anvil.google.drive
@@ -9,7 +9,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 
 
-class Question1(Question1Template):
+class IntakeQuestions(IntakeQuestionsTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
@@ -19,5 +19,9 @@ class Question1(Question1Template):
   def goal_radio_other_clicked(self, **event_args):
     """This method is called when this radio button is selected"""
     self.goal_other.visible = self.goal_radio_other_clicked
+
+  def create_account_button_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    pass
 
 
