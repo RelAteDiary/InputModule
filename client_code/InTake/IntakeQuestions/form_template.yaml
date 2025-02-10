@@ -125,8 +125,12 @@ components:
   - event_bindings: {click: create_account_button_click}
     layout_properties: {grid_position: 'DDPIBQ,TWZLSB'}
     name: create_account_button
-    properties: {role: outlined-button, text: 'Make an account, and start your journey to more healthful eating'}
+    properties: {role: outlined-button, text: Make an account}
     type: Button
+  - layout_properties: {grid_position: 'YXVBXG,QSCUFX'}
+    name: rich_text_1
+    properties: {align: center, content: and start your journey to more healthful eating}
+    type: RichText
   layout_properties: {slot: default}
   name: content_panel
   properties: {}
