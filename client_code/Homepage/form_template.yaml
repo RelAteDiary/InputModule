@@ -11,6 +11,9 @@ components:
         - name: rich_text_5
           properties: {}
           type: RichText
+        - name: grid_panel_1
+          properties: {}
+          type: GridPanel
         name: rich_text_4
         properties: {content: 'Experiment started:'}
         type: RichText

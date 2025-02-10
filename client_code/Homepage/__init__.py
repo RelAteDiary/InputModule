@@ -14,6 +14,12 @@ class Homepage(HomepageTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
+    gp = self.grid_panel_1
+    gp.add_component(Label(text="Name:"),
+                 row="ExperimentAt", col_xs=0, width_xs=2)
+    gp.add_component(Label(text="Name:"),
+                 row="ExperimentAt", col_xs=0, width_xs=2)
+
     # Any code you write here will run before the form opens.
 
   def outlined_button_1_click(self, **event_args):
