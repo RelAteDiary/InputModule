@@ -1,0 +1,58 @@
+components:
+- components:
+  - components:
+    - components:
+      - components: []
+        layout_properties: {}
+        name: rich_text_3
+        properties: {content: 'Check that impact on your symptoms when you add or remove foods groups, change up your routine, take different medication, or run some other bio hack experiment!'}
+        type: RichText
+      - components:
+        - name: rich_text_5
+          properties: {}
+          type: RichText
+        name: rich_text_4
+        properties: {content: 'Experiment started:'}
+        type: RichText
+      - name: outlined_button_2
+        properties: {role: outlined-button, text: Add an experiment}
+        type: Button
+      - name: outlined_button_3
+        properties: {role: outlined-button, text: Suggest a diet change 🪙}
+        type: Button
+      - name: outlined_button_3_copy
+        properties: {role: outlined-button, text: Stop or pause experiment}
+        type: Button
+      - name: outlined_button_3_copy_copy
+        properties: {role: outlined-button, text: Restart experiment}
+        type: Button
+      data_bindings: []
+      layout_properties: {grid_position: 'NEWUYL,XJDGIZ'}
+      name: rich_text_2
+      properties: {content: '# Experiment #'}
+      type: RichText
+    layout_properties: {grid_position: 'DBRAVX,HGCJPW'}
+    name: outlined_card_1
+    properties: {role: outlined-card}
+    type: ColumnPanel
+  - event_bindings: {click: outlined_button_1_click}
+    layout_properties: {grid_position: 'ZHMGSP,SCGWAI'}
+    name: outlined_button_1
+    properties: {role: outlined-button, text: logout}
+    type: Button
+  layout_properties: {slot: default}
+  name: content_panel
+  properties: {}
+  type: ColumnPanel
+- layout_properties: {slot: nav-right}
+  name: navbar_links
+  properties: {}
+  type: FlowPanel
+- layout_properties: {slot: title}
+  name: rich_text_1
+  properties: {content: relATE}
+  type: RichText
+container:
+  properties: {html: '@theme:standard-page.html'}
+  type: HtmlTemplate
+is_package: true
