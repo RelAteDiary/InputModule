@@ -8,6 +8,10 @@ from anvil.tables import app_tables
 from datetime import date
 from .. import constants
 
+liu = app_tables.users.get(email='lutetium.helen@gmail.com')
+app_tables.experiments.add_row(Person=liu,
+                             Text="Jane is a good kid")
+
 def get_current_experiment():
   app_tables.experiments.search(
     user=anvil.users.get_user(),
