@@ -23,16 +23,17 @@ If there is no food, then return an empty list. If you are not able to fetch ing
 '''
 food_text = 'chicken soup and sourdough bread with fruit bowl'
 
-class FoodDiaryEntry(BaseModel):
-  class DishDetails(BaseModel):
+class DishDetails(BaseModel):
     food:str
     ingredients: list[str]
     ingredient_amount: list[float]
     ingredient_unit: list[str]
-  class FoodDiaryEntryDetails(BaseModel):
+
+class FoodDiaryEntryDetails(BaseModel):
     dishes: list[DishDetails]
 
-  food_diary_entries: list[FoodDiaryDetails]
+class FoodDiaryEntry(BaseModel):
+  food_diary_entries: list[FoodDiaryEntryDetails]
   
 response = openai_client.beta.chat.completions.parse(
     model="gpt-4o-mini",
