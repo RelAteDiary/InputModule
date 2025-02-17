@@ -18,4 +18,5 @@ class TestMethods(unittest.TestCase):
 
 @anvil.server.callable
 def run_tests():
+  print('running unit tests')
   unittest.main(verbosity=1)
