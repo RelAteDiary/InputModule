@@ -6,7 +6,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
-from . import Constants as constants
+from Constants import Constants
 import datetime
 
 liu = app_tables.users.get(email='lutetium.helen@gmail.com')
@@ -21,11 +21,11 @@ def experiments_get_current():
   
 @anvil.server.callable
 def experiments_get_type_text(db_type):
-  if db_type == constants.EXPERIMENT_ELIMINATION:
+  if db_type == Constants.EXPERIMENT_ELIMINATION:
     return 'Elimination diet'
-  elif db_type == constants.EXPERIMENT_REINTRODUCTION:
+  elif db_type == Constants.EXPERIMENT_REINTRODUCTION:
     return 'Reintroduction diet'
-  elif db_type == constants.EXPERIMENT_SELF_DIRECTED:
+  elif db_type == Constants.EXPERIMENT_SELF_DIRECTED:
     return 'Experiment'
 
 @anvil.server.callable
