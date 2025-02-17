@@ -105,6 +105,6 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/anvil/secrets.yml
-startup: {module: ExecuteUnitTests, type: form}
+startup: {module: InTake.IntakeLanding, type: form}
 startup_form: null
 uplink_visible: true
