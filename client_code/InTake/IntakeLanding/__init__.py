@@ -34,5 +34,5 @@ class IntakeLanding(IntakeLandingTemplate):
     self.clear_inputs()
 
   def outlined_button_1_click(self, **event_args):
-    """This method is called when the button is clicked"""
+    user.add
     open_form('InTake.IntakeQuestions')
