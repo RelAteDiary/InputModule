@@ -11,17 +11,19 @@ from anvil.tables import app_tables
 
 class IntakeQuestions(IntakeQuestionsTemplate):
   def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
     self.init_components(**properties)
-
-    # Any code you write here will run before the form opens.
+    anvil.server.call('start_intake_questions')
 
   def goal_radio_other_clicked(self, **event_args):
-    """This method is called when this radio button is selected"""
-    self.goal_other.visible = self.goal_radio_other_clicked
+    self.goal_other.visible = True
+
+  def diet_allergen_change(self, **event_args):
+    self.diet_allergen_text_box.visible = True
 
   def create_account_button_click(self, **event_args):
-    """This method is called when the button is clicked"""
+    anvil.server.call('submit_intake_question')
     user =  anvil.users.login_with_form()
     open_form('Homepage')
+
+
 
