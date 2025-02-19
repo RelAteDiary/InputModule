@@ -4,10 +4,6 @@ import anvil.server
 import anvil.google.auth, anvil.google.drive
 from anvil.google.drive import app_files
 import anvil.users
-import anvil.tables as tables
-import anvil.tables.query as q
-from anvil.tables import app_tables
-
 
 class IntakeGoal(IntakeGoalTemplate):
   selected = None
@@ -19,5 +15,7 @@ class IntakeGoal(IntakeGoalTemplate):
     self.goal_other.visible = True
 
   def next_button_click(self, **event_args):
-    print(self.goal_radio_id.get_group_value())
     open_form('InTake.IntakePledge')
+    anvil.server.call('input_intake_answer', 
+                      'goal',
+                      self.goal_radio_id.get_group_value())
