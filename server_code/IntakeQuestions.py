@@ -27,5 +27,8 @@ def submit_intake_question():
     anvil.server.cookies.local.set(30, guest_id=guest_id)
     app_tables.users.add_row(guest_id=guest_id)
 
+def intake_set_goal(goal):
+  pass
+
 def merge_logged_in_user():
-  get_guest_id
+  pass
