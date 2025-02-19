@@ -9,25 +9,25 @@ components:
       event_bindings: {clicked: goal_radio_id_clicked}
       layout_properties: {grid_position: 'OQVPYX,RKITEZ'}
       name: goal_radio_id
-      properties: {group_name: radioGroupGoal, selected: false, text: 'I think I have a food intolerance or allergy, and I want help identifying it.', value: find_hypersensitivity}
+      properties: {group_name: '', selected: false, text: 'I think I have a food intolerance or allergy, and I want help identifying it.', value: ''}
       type: RadioButton
     - data_bindings: []
       layout_properties: {grid_position: 'XKVCFR,ETOCII'}
       name: goal_radio_chronic
-      properties: {group_name: radioGroupGoal, text: I have a chronic health condition and I want to figure out what foods help and what makes it worse., value: improve_chronic_condition}
+      properties: {group_name: radioGroupGoal, text: I have a chronic health condition and I want to figure out what foods help and what makes it worse., value: ''}
       type: RadioButton
     - data_bindings: []
       layout_properties: {grid_position: 'MMHINF,GZRBWH'}
       name: goal_radio_healthy
-      properties: {group_name: radioGroupGoal, selected: false, text: 'I want to eat healthier, and I''m looking for guidance.', value: eat_healthy}
+      properties: {group_name: '', selected: false, text: 'I want to eat healthier, and I''m looking for guidance.', value: ''}
       type: RadioButton
     - data_bindings: []
       event_bindings: {change: goal_radio_other_change, clicked: goal_radio_other_clicked}
       layout_properties: {grid_position: 'YOXWIC,SEOCSY'}
       name: goal_radio_other
-      properties: {group_name: radioGroupGoal, selected: false, text: Other, value: other}
+      properties: {group_name: '', selected: false, text: Other, value: ''}
       type: RadioButton
-    - event_bindings: {pressed_enter: goal_other_pressed_enter, show: goal_other_show}
+    - event_bindings: {lost_focus: goal_other_lost_focus, pressed_enter: goal_other_pressed_enter, show: goal_other_show}
       layout_properties: {grid_position: 'YBGDPD,RLNYGQ'}
       name: goal_other
       properties: {visible: false}

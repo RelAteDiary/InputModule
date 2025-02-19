@@ -34,6 +34,7 @@ def input_intake_answer(question, value):
   match question:
     case 'goal':
       print('we are going to set the goal of this user')
+      print(f'value is {value}')
       user['goal'] = value
 
 def merge_logged_in_user():
