@@ -16,3 +16,8 @@ class IntakeGoal(IntakeGoalTemplate):
 
   def goal_radio_other_clicked(self, **event_args):
     self.goal_other.visible = True
+    self.next_button.visible = True
+
+  def next_button_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    pass

@@ -31,20 +31,11 @@ components:
     name: goal_outline_card
     properties: {role: outlined-card}
     type: ColumnPanel
-  - components:
-    - components:
-      - layout_properties: {}
-        name: rich_text_1_copy
-        properties: {content: Since food}
-        type: RichText
-      layout_properties: {grid_position: 'GACIOR,VLNJOO'}
-      name: rich_text_1
-      properties: {content: 'We can help you figure out what foods to swap out of your diet and what to swap in. '}
-      type: RichText
-    layout_properties: {grid_position: 'MLJWML,NXHDJK'}
-    name: outlined_card_1
-    properties: {role: outlined-card}
-    type: ColumnPanel
+  - event_bindings: {click: next_button_click}
+    layout_properties: {grid_position: 'AWLLOJ,XGAZEQ'}
+    name: next_button
+    properties: {text: Next, visible: false}
+    type: Button
   layout_properties: {slot: default}
   name: content_panel
   properties: {}
