@@ -13,7 +13,7 @@ components:
         type: RichText
       layout_properties: {grid_position: 'PYCHJM,JEESLZ'}
       name: title_card
-      properties: {content: '# Find the foods making you {rich_text}.'}
+      properties: {content: '# Move past the foods making you {rich_text}.'}
       type: RichText
     layout_properties: {grid_position: 'SMVJVT,JZBOQU'}
     name: outlined_card_1

@@ -99,24 +99,11 @@ name: M3 App 1
 native_deps:
   head_html: |-
     <script>
-    var texts = new Array();
-    texts.push("Text1");
-    texts.push("Text2");
-    texts.push("Text3");
 
-    var point = 0;
-
-    function changeText(texts){
-      $('h3').html(texts[point]);
-      if(point < texts.length - 1){
-        point ++;
-      }else{
-        point = 0;
-      }
-      setTimeout(changeText, 1500)
+    function changeText(container, texts, i=0){
+      container.innerHTML = texts[i];
+      setTimeout(changeText, 500, container, texts, (i+1) % texts.length)
     }
-
-    changeText();
     </script>
 package_name: M3_App_1
 renamed: true

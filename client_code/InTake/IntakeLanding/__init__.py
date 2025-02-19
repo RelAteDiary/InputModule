@@ -7,15 +7,13 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
-from anvil.js.window import jQuery
+from anvil.js.window import changeText
 
 class IntakeLanding(IntakeLandingTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.symptom_rich_text.content = 'bloated'
-
-    # Any code you write here will run before the form opens.
+    changeText(anvil.js.get_dom_node(self.symptom_rich_text), ['bloated','tired','in pain','poopy','gassy','nauseous','sick'])
 
   def clear_inputs(self):
     # Clear our three text boxes
