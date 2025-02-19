@@ -13,13 +13,7 @@ class IntakeLanding(IntakeLandingTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    changeText(anvil.js.get_dom_node(self.symptom_rich_text), ['# bloated','# tired','# in pain','# poopy','# gassy','# nauseous','# sick'])
-
-  def clear_inputs(self):
-    # Clear our three text boxes
-    self.name_box.text = ""
-    self.email_box.text = ""
-    self.feedback_box.text = ""
+    changeText(anvil.js.get_dom_node(self.symptom_rich_text), ['bloated','tired','in pain','poopy','gassy','nauseous','sick'])
     
   def submit_button_click(self, **event_args):
     """This method is called when the button is clicked"""

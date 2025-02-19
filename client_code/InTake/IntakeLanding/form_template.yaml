@@ -6,23 +6,17 @@ components:
   type: FlowPanel
 - components:
   - components:
-    - components: []
+    - components:
+      - layout_properties: {slot: rich_text}
+        name: symptom_rich_text
+        properties: {content: sick, foreground: 'theme:Primary'}
+        type: RichText
       layout_properties: {grid_position: 'PYCHJM,JEESLZ'}
       name: title_card
       properties:
-        content: '# Move past the foods making you'
-        spacing:
-          margin: [null, null, '0', null]
-          padding: [null, null, '0', null]
-      type: RichText
-    - layout_properties: {grid_position: 'NGBKOO,YGXLOB'}
-      name: symptom_rich_text
-      properties:
-        content: '# sick'
-        foreground: theme:Primary
-        spacing:
-          margin: ['0', null, null, null]
-          padding: ['0', null, null, null]
+        content: |-
+          # Move past the foods making you
+          # {rich_text}
       type: RichText
     layout_properties: {grid_position: 'SMVJVT,JZBOQU'}
     name: outlined_card_1

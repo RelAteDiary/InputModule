@@ -17,8 +17,7 @@ class IntakeGoal(IntakeGoalTemplate):
 
   def goal_radio_other_clicked(self, **event_args):
     self.goal_other.visible = True
-    self.next_button.visible = True
 
   def next_button_click(self, **event_args):
-    print(self.selected)
+    print(self.goal_radio_id.get_group_value())
     open_form('InTake.IntakePledge')
