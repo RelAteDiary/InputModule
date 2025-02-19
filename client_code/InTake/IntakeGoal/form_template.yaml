@@ -96,7 +96,8 @@ components:
       name: diet_none
       properties: {text: None - I eat freely}
       type: CheckBox
-    - layout_properties: {grid_position: 'VWWDQI,HEASRX'}
+    - event_bindings: {change: diet_other_change}
+      layout_properties: {grid_position: 'VWWDQI,HEASRX'}
       name: diet_other
       properties: {text: Other}
       type: CheckBox

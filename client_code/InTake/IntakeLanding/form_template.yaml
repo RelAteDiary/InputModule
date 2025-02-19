@@ -6,10 +6,15 @@ components:
   type: FlowPanel
 - components:
   - components:
-    - layout_properties: {grid_position: 'DLDYBK,SQNOXA'}
-      name: label_1
-      properties: {font_size: 23, role: headline, text: 'Find food intolerances and rediscover what healthy eating looks like for you. '}
-      type: Label
+    - components:
+      - layout_properties: {slot: rich_text}
+        name: symptom_rich_text
+        properties: {content: sick, foreground: 'theme:Primary'}
+        type: RichText
+      layout_properties: {grid_position: 'PYCHJM,JEESLZ'}
+      name: title_card
+      properties: {content: '# Find the foods making you {rich_text}.'}
+      type: RichText
     layout_properties: {grid_position: 'SMVJVT,JZBOQU'}
     name: outlined_card_1
     properties: {background: 'theme:Primary Container', role: outlined-card}
@@ -19,6 +24,15 @@ components:
     name: outlined_button_1
     properties: {role: outlined-button, text: Get Started}
     type: Button
+  - components:
+    - layout_properties: {}
+      name: rich_text_2
+      properties: {content: No more being overwhelmed. You're working towards an answer.}
+      type: RichText
+    layout_properties: {grid_position: 'PBUMIL,RUQTZP'}
+    name: rich_text_1
+    properties: {content: 'relATE is an app that helps you find your food sensitivities and adapt to your new diet. Whether you''re fine tuning your diet or just starting figure out what you can tolerate, you''re at the right place.'}
+    type: RichText
   layout_properties: {slot: default}
   name: content_panel
   properties: {col_widths: '{}'}

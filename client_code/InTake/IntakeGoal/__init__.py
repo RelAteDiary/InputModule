@@ -1,4 +1,4 @@
-from ._anvil_designer import IntakeQuestionsTemplate
+from ._anvil_designer import IntakeGoalTemplate
 from anvil import *
 import anvil.server
 import anvil.google.auth, anvil.google.drive
@@ -9,7 +9,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 
 
-class IntakeQuestions(IntakeQuestionsTemplate):
+class IntakeGoal(IntakeGoalTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
     anvil.server.call('start_intake_questions')
@@ -19,6 +19,9 @@ class IntakeQuestions(IntakeQuestionsTemplate):
 
   def diet_allergen_change(self, **event_args):
     self.diet_allergen_text_box.visible = True
+
+  def diet_other_change(self, **event_args):
+    self.diet_other_text_box.visible = True
 
   def create_account_button_click(self, **event_args):
     anvil.server.call('submit_intake_question')
