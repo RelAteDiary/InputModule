@@ -12,7 +12,11 @@ from anvil.tables import app_tables
 class IntakePledge(IntakePledgeTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
-    anvil.server.call("start_intake_questions")
+    self.rich_text_goal.content = anvil.server.call('intake_get_answer')
 
   def goal_radio_other_clicked(self, **event_args):
     self.goal_other.visible = True
+
+  def button_2_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    open_form('InTake.IntakeGoal')

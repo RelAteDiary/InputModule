@@ -18,24 +18,31 @@ def get_guest_id():
   return guest_id
 
 @anvil.server.callable
-def start_intake_questions():
+def intake_start():
   get_guest_id()
 
 @anvil.server.callable
-def submit_intake_question():
+def intake_submit():
   pass
 
 @anvil.server.callable
-def input_intake_answer(question, value):
+def intake_set_answer(question, value):
   guest_id = get_guest_id()
   user = app_tables.users.get(guest_id=guest_id)
   if user is None:
     print("Something has gone wrong, user is not being found.")
   match question:
     case 'goal':
-      print('we are going to set the goal of this user')
-      print(f'value is {value}')
       user['goal'] = value
+
+@anvil.server.callable
+def intake_get_answer(question):
+  guest_id = get_guest_id()
+  user = app_tables.users.get(guest_id=guest_id)
+  
+  if user is None:
+    return ''
+  return user[question]
 
 def merge_logged_in_user():
   pass
