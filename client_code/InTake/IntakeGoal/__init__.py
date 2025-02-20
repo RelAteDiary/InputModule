@@ -21,6 +21,7 @@ class IntakeGoal(IntakeGoalTemplate):
                         value='other',
                         tag='radio_other')
     
+    
     text_area = TextBox(visible=False, tag='text_box_other')
     radio4.add_event_handler('clicked', self.radio_other_clicked)
 
