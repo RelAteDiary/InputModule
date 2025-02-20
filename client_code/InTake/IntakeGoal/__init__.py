@@ -30,7 +30,7 @@ class IntakeGoal(IntakeGoalTemplate):
 
     answer = anvil.server.call('intake_get_answer','goal')
     if answer != '':
-      pass
+      
 
   def radio_other_clicked(self, **event_args):
     for c in self.column_panel_1.get_components():
