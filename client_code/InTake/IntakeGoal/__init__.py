@@ -4,39 +4,33 @@ import anvil.server
 
 class IntakeGoal(IntakeGoalTemplate):
   def __init__(self, **properties):
+    self.item = {'selected': anvil.server.call('intake_get_answer','goal')}
     self.init_components(**properties)
-
+    
     radio_group_name = 'rb_goal'
-    radio1 = RadioButton(text='I think I have a food intolerance or allergy, and I want help identifying it.',
-                        group_name=radio_group_name,
-                        value='find hypersensitivity')
-    radio2 = RadioButton(text='I have a chronic health condition and I want to figure out what foods help and what makes it worse.',
-                        group_name=radio_group_name,
-                        value='manage condition')
-    radio3 = RadioButton(text='I want to eat healthier, and I\'m looking for guidance.',
-                        group_name=radio_group_name,
-                        value='eat healthier')
-    radio4 = RadioButton(text='Other',
-                        group_name=radio_group_name,
-                        value='other',
-                        tag='radio_other')
-    
-    
-    text_area = TextBox(visible=False, tag='text_box_other')
-    radio4.add_event_handler('clicked', self.radio_other_clicked)
+    self.radios = {
+      'find_hypersensitivity': 'I think I have a food intolerance or allergy, and I want help identifying it.',
+      'manage_condition': 'I have a chronic health condition and I want to figure out what foods help and what makes it worse.',
+      'eat_healthier': 'I want to eat healthier, and I\'m looking for guidance.'
+    }
+    for value in radios:
+      radio_button = RadioButton(text=radios[value],
+                                 group_name=radio_group_name,
+                                 value=value,
+                                 tag=value,
+                                 selected=(value==self.item['selected']))
+      self.column_panel_1.add_component(radio_button)
 
-    rb_goals = [radio1, radio2, radio3, radio4, text_area]
-    for rb in rb_goals:
-      self.column_panel_1.add_component(rb)
-
-    answer = anvil.server.call('intake_get_answer','goal')
-    if answer != '':
-      
-
-  def radio_other_clicked(self, **event_args):
-    for c in self.column_panel_1.get_components():
-      if c.tag == 'text_box_other':
-        c.visible=True
+    radio_other = RadioButton(text='Other',
+                              group_name=radio_group_name,
+                              value='other',
+                              tag='radio_other',
+                              selected=(len(self.item['selected'])>0 
+                                        and self.item['selected'][0] == '_')
+    text_box = TextBox(tag='text_box_other', text=self.item['selected'][1:] if (len(self.item['selected'])>0 
+                                        and self.item['selected'][0] == '_') else '')
+    self.column_panel_1.add_component(radio_other)
+    self.column_panel_1.add_component(text_box)
 
   def next_button_click(self, **event_args):
     other_text = ''
@@ -47,7 +41,7 @@ class IntakeGoal(IntakeGoalTemplate):
     for c in self.column_panel_1.get_components():
       if c.tag == 'radio_other':
         other_radio = c
-    other_radio.value = '"' + other_text + '"'
+    other_radio.value = '_' + other_text
 
     anvil.server.call('intake_set_answer', 
                       'goal',
