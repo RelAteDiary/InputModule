@@ -6,6 +6,8 @@ class IntakeGoal(IntakeGoalTemplate):
   def __init__(self, **properties):
     self.item = {'selected': anvil.server.call('intake_get_answer','goal')}
     self.init_components(**properties)
+
+    RadioGroupPanel()
     
     radio_group_name = 'rb_goal'
     self.radios = {
