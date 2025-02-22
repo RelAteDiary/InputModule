@@ -1,6 +1,7 @@
 from ._anvil_designer import IntakeGoalTemplate
 from anvil import *
 import anvil.server
+from m3._Components.RadioGroupPanel import RadioGroupPanel
 
 class IntakeGoal(IntakeGoalTemplate):
   def __init__(self, **properties):
