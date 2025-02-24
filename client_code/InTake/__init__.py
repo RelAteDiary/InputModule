@@ -5,17 +5,30 @@ import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
-# This is a package.
-# You can define variables and functions here, and use them from any form. For example, in a top-level form:
-#
-#    from .. import Package1
-#
-#    Package1.say_hello()
-#
+# from m3._Components import RadioGroupPanel
+# from m3.components import RadioGroupPanel, RadioButton, TextBox, Button
 
-def build_radio_group():
-  pass
-
+# class MultipleChoiceQuestion:
+#   def __init__(self, value_to_questions, has_other_text=True, button_text=''):
+#     self.panel = RadioGroupPanel()
+#     self.has_other_text = has_other_text
+#     for value in value_to_questions:
+#       self.panel.add_component(RadioButton(text=value_to_questions[value], value=value))
+#     if has_other_text:
+#       self.other_radio = RadioButton(text-'other', value='other')
+#       self.panel.add_component(self.other_radio)
+#       self.other_text = TextBox(visible=False)
+#       self.panel.add_component(self.other_text)
+#     if len(button_text) > 0:
+#       self.submit_button = Button()
+#       self.panel.add_component(self.submit_button)
+#   def submit_click(self):
+#     if self.submit_button is None:
+#       print('WARNING: there is not submit button')
+#     if self.other_radio is not None and self.other_text is not None:
+#       self.other_radio.value = self.other_text.text
+      
+    
 
 def say_hello():
   print("Hello, world")
