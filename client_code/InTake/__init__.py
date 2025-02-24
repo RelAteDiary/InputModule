@@ -13,6 +13,9 @@ from anvil.tables import app_tables
 #    Package1.say_hello()
 #
 
+def build_radio_group():
+  pass
+
 
 def say_hello():
   print("Hello, world")
