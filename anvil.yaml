@@ -101,6 +101,9 @@ dependencies:
 - dep_id: dep_ipbks3iegq5dhg
   resolution_hints: {app_id: 4UK6WHQ6UX7AKELK, name: Material 3 Theme, package_name: m3}
   version: {version_tag: v1.2.2}
+- dep_id: dep_2s2y4uk691mcjxe
+  resolution_hints: {app_id: C6ZZPAPN4YYF5NVJ, name: Anvil Extras, package_name: anvil_extras}
+  version: {version_tag: v3.1.0}
 metadata: {title: relATE}
 name: relATE
 native_deps:
@@ -116,9 +119,10 @@ package_name: relATE
 renamed: true
 runtime_options:
   client_version: '3'
+  legacy_features: {__dict__: true, bootstrap3: true, class_names: true, root_container: true}
   server_spec: {base: python310-minimal}
   server_version: python3-sandbox
-  version: 2
+  version: 3
 secrets:
   openai_api_key:
     type: secret
