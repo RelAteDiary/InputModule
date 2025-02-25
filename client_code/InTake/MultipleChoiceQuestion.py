@@ -35,7 +35,7 @@ class MultipleChoiceQuestion:
       self.prev_button.add_event_handler(
         'click',self._update_question_answer)
       self.prev_button.add_event_handler(
-        'click', self._open_link,prev_button_link)
+        'click', lambda **event_args : open_form(prev_button_link))
       self.panel.add_component(self.prev_button)
       
     if next_button_link is not None:
