@@ -1,6 +1,6 @@
 import anvil.server
 from anvil import *
-from m3.components import RadioGroupPanel, RadioButton, Button, TextBox
+from m3.components import Button, TextBox, CardContentContainer
 
 class CheckBoxQuesiton:
   def __init__(self, question, value_to_questions,
@@ -11,13 +11,13 @@ class CheckBoxQuesiton:
     self.question_id = question_id
     self.has_other_textbox = has_other_textbox
     
-    self.panel = RadioGroupPanel()
+    self.panel = CardContentContainer(background_color='transparent', border='0px')
     
     self.panel.add_component(RichText(content=question))
     
     for value in value_to_questions:
       print(f'adding value {value}')
-      self.panel.add_component(RadioButton(
+      self.panel.add_component(Checkbox(
         text=value_to_questions[value], value=value))
 
     if has_other_textbox:
