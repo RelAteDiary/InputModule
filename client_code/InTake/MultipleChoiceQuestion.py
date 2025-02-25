@@ -16,7 +16,6 @@ class MultipleChoiceQuestion:
     self.panel.add_component(RichText(content=question))
     
     for value in value_to_questions:
-      print(f'adding value {value}')
       self.panel.add_component(RadioButton(
         text=value_to_questions[value], value=value))
 

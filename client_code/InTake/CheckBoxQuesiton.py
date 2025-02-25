@@ -1,6 +1,6 @@
 import anvil.server
 from anvil import *
-from m3.components import Button, TextBox, CardContentContainer
+from m3.components import Button, TextBox, CardContentContainer, Checkbox
 
 class CheckBoxQuesiton:
   def __init__(self, question, value_to_questions,
@@ -10,18 +10,23 @@ class CheckBoxQuesiton:
                next_button_link=None):
     self.question_id = question_id
     self.has_other_textbox = has_other_textbox
+    self.selected = []
     
-    self.panel = CardContentContainer(background_color='transparent', border='0px')
+    self.panel = CardContentContainer(
+      background_color='transparent', border='0px')
     
     self.panel.add_component(RichText(content=question))
     
     for value in value_to_questions:
-      print(f'adding value {value}')
-      self.panel.add_component(Checkbox(
-        text=value_to_questions[value], value=value))
+      checkbox = Checkbox(
+        text=value_to_questions[value])
+      checkbox.add_event_handler(
+        'change', 
+        self.change_selected(checkbox, value))
+      self.panel.add_component(checkbox)
 
     if has_other_textbox:
-      self.other_radio = RadioButton(
+      self.other_checkbox = Checkbox(
         text='other', value='other')
       self.other_radio.add_event_handler(
         'select', self._show_other_textbox)
@@ -48,6 +53,14 @@ class CheckBoxQuesiton:
       self.next_button.add_event_handler(
         'click', lambda **event_args : open_form(next_button_link))
       self.panel.add_component(self.next_button)
+
+  def _change_selected(self, checkbox, value):
+    def f(**event_args):
+      if checkbox.checked :
+        self.selected.append(value)
+      else :
+        self.selected.remove(value)
+    return f
 
   def _show_other_textbox(self, **event_args):
     if self.other_text is None:
