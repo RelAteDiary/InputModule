@@ -1,8 +1,9 @@
 import anvil.server
 from anvil import *
+import anvil
 from m3.components import Button, TextBox, CardContentContainer, Checkbox
 
-class CheckBoxQuesiton:
+class CheckBoxQuestion:
   def __init__(self, question, value_to_questions,
                question_id,
                has_other_textbox=True, 
@@ -14,23 +15,23 @@ class CheckBoxQuesiton:
     
     self.panel = CardContentContainer(
       background_color='transparent', border='0px')
-    
-    self.panel.add_component(RichText(content=question))
+    richtext = anvil.RichText(content=question, format='markdown')
+    self.panel.add_component(richtext)
     
     for value in value_to_questions:
       checkbox = Checkbox(
         text=value_to_questions[value])
       checkbox.add_event_handler(
         'change', 
-        self.change_selected(checkbox, value))
+        self._change_selected(checkbox, value))
       self.panel.add_component(checkbox)
 
     if has_other_textbox:
       self.other_checkbox = Checkbox(
         text='other', value='other')
-      self.other_radio.add_event_handler(
-        'select', self._show_other_textbox)
-      self.panel.add_component(self.other_radio)
+      self.other_checkbox.add_event_handler(
+        'change', self._show_other_textbox)
+      self.panel.add_component(self.other_checkbox)
       self.other_text = TextBox(visible=False)
       self.panel.add_component(self.other_text)
       
@@ -68,9 +69,9 @@ class CheckBoxQuesiton:
     self.other_text.visible = True
   
   def _update_question_answer(self, **event_args):
-    if self.has_other_textbox and self.other_radio.selected:
-      self.other_radio.value = 'other-' + self.other_text.text
-    print(f'panel value is {self.panel.selected_value}')
+    if self.has_other_textbox and self.other_checkbox.checked:
+      self.selected.append('other-' + self.other_text.text)
+    print(f'panel value is {self.selected}')
     anvil.server.call('intake_set_answer', 
                       self.question_id, 
-                      self.panel.selected_value)
+                      self.selected)

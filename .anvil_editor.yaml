@@ -16,7 +16,7 @@ unique_ids:
     Experiments: '173921387686651457042162.30573'
     Globals: '1739671583530510229323224.58826'
     InTake: '1739077258014238628939376.641'
-    InTake.CheckBoxQuesiton: '1740453573402120387742911.10332'
+    InTake.CheckBoxQuestion: '1740453573402120387742911.10332'
     InTake.MultipleChoiceQuestion: '1740432168887607591942250.1152'
   scripts: {}
   server_modules:
