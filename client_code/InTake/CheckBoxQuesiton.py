@@ -2,7 +2,7 @@ import anvil.server
 from anvil import *
 from m3.components import RadioGroupPanel, RadioButton, Button, TextBox
 
-class MultipleChoiceQuestion:
+class CheckBoxQuesiton:
   def __init__(self, question, value_to_questions,
                question_id,
                has_other_textbox=True, 
