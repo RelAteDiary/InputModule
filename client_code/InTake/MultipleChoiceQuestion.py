@@ -5,6 +5,7 @@ from m3.components import RadioGroupPanel, RadioButton, Button, TextBox
 class MultipleChoiceQuestion:
   def __init__(self, question, value_to_questions,
                question_id,
+               selected,
                has_other_textbox=True, 
                prev_button_link=None,
                next_button_link=None):
@@ -16,16 +17,20 @@ class MultipleChoiceQuestion:
     self.panel.add_component(RichText(content=question))
     
     for value in value_to_questions:
-      self.panel.add_component(RadioButton(
-        text=value_to_questions[value], value=value))
+      self.panel.add_component(
+        RadioButton(
+          text=value_to_questions[value], value=value,
+          selected = (selected==value))
+      )
 
     if has_other_textbox:
       self.other_radio = RadioButton(
-        text='other', value='other')
+        text='other', value='other', selected = selected.startswith('other-'))
       self.other_radio.add_event_handler(
         'select', self._show_other_textbox)
       self.panel.add_component(self.other_radio)
-      self.other_text = TextBox(visible=False)
+      self.other_text = TextBox(visible=selected.startswith('other-'),
+                               text=selected[len('other-'):])
       self.panel.add_component(self.other_text)
       
     if prev_button_link is not None:

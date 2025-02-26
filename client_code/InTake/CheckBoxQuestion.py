@@ -6,6 +6,7 @@ from m3.components import Button, TextBox, CardContentContainer, Checkbox
 class CheckBoxQuestion:
   def __init__(self, question, value_to_questions,
                question_id,
+               selected=[],
                callout=None, 
                has_other_textbox=True, 
                prev_button_link=None,
@@ -24,18 +25,29 @@ class CheckBoxQuestion:
     
     for value in value_to_questions:
       checkbox = Checkbox(
-        text=value_to_questions[value])
+        text=value_to_questions[value],
+        checked=any(s == value for s in self.selected)
+      )
       checkbox.add_event_handler(
         'change', 
         self._change_selected(checkbox, value))
       self.panel.add_component(checkbox)
 
     if has_other_textbox:
-      self.other_checkbox = Checkbox(text='Other')
+      existing_other_text = [x for x in selected if x.startswith('other-')]
+      self.other_checkbox = Checkbox(
+        text='Other',
+        checked = len(existing_other_text) > 0
+      )
       self.other_checkbox.add_event_handler(
         'change', self._show_other_textbox)
       self.panel.add_component(self.other_checkbox)
-      self.other_text = TextBox(visible=False)
+      
+      # TODO P4 this only gets the first other entry
+      self.other_text = TextBox(
+        visible=len(existing_other_text) > 0,
+        text='' if len(existing_other_text) == 0 else existing_other_text[0][len('other-'):]
+      )
       self.panel.add_component(self.other_text)
 
     flow_panel = FlowPanel(align='center')
@@ -79,6 +91,7 @@ class CheckBoxQuestion:
     if self.has_other_textbox and self.other_checkbox.checked:
       self.selected.append('other-' + self.other_text.text)
     print(f'panel value is {self.selected}')
+    
     anvil.server.call('intake_set_answer', 
                       self.question_id, 
                       self.selected)

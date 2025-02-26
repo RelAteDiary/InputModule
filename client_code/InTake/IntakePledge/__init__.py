@@ -6,8 +6,9 @@ from ..CheckBoxQuestion import CheckBoxQuestion
 
 class IntakePledge(IntakePledgeTemplate):
   def __init__(self, **properties):
-    goal = anvil.server.call('intake_get_answer','goal')
-    callout = 'Pledge to work towards your goal: ' + goal
+    self.question_id = 'pledge'
+    goal,pledge = anvil.server.call('intake_get_answer',['goal', self.question_id])
+    callout = 'Pledge to work towards your goal: ' + goal.replace('_', ' ')
     question = (
     'The more accurately you log in the food and symptoms diary, ' +
     'the more information we can use to figure out what foods are ' +
@@ -18,5 +19,5 @@ class IntakePledge(IntakePledgeTemplate):
       'persevere': 'I pledge to keep trying and not give up on my health.',
       'log_daily': 'I pledge to log my meals and symptoms every day this week, or at least try my best to',
     }
-    mc = CheckBoxQuestion(question, options, 'goal', callout=callout, prev_button_link='Intake.IntakeGoal',next_button_link='InTake.IntakeLanding')
+    mc = CheckBoxQuestion(question, options, 'pledge', selected=pledge, callout=callout, prev_button_link='Intake.IntakeGoal',next_button_link='InTake.IntakeLanding')
     self.column_panel_1.add_component(mc.panel)
