@@ -47,6 +47,18 @@ db_schema:
       type: datetime
     server: full
     title: feedback table
+  intolerances:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: user
+      target: users
+      type: link_single
+    - admin_ui: {order: 1, width: 200}
+      name: intolerance
+      type: string
+    server: full
+    title: Intolerances
   users:
     client: none
     columns:
@@ -77,17 +89,49 @@ db_schema:
     - admin_ui: {width: 200}
       name: email_confirmation_key
       type: string
+    - admin_ui: {order: 9, width: 200}
+      name: guest_id
+      type: string
+    - admin_ui: {order: 10, width: 200}
+      name: p-goal
+      type: string
+    - admin_ui: {order: 11, width: 200}
+      name: p-pledges
+      type: simpleObject
+    - admin_ui: {order: 12, width: 200}
+      name: p-diets
+      type: simpleObject
+    - admin_ui: {order: 13, width: 200}
+      name: p-ack_non_med_disclaimer
+      type: bool
     server: full
     title: Users
-dependencies: []
-name: M3 App 1
-package_name: M3_App_1
+dependencies:
+- dep_id: dep_ipbks3iegq5dhg
+  resolution_hints: {app_id: 4UK6WHQ6UX7AKELK, name: Material 3 Theme, package_name: m3}
+  version: {version_tag: v1.2.2}
+- dep_id: dep_2s2y4uk691mcjxe
+  resolution_hints: {app_id: C6ZZPAPN4YYF5NVJ, name: Anvil Extras, package_name: anvil_extras}
+  version: {version_tag: v3.1.0}
+metadata: {title: relATE}
+name: relATE
+native_deps:
+  head_html: |-
+    <script>
+
+    function changeText(container, texts, i=0){
+      container.innerHTML = texts[i];
+      setTimeout(changeText, 500, container, texts, (i+1) % texts.length)
+    }
+    </script>
+package_name: relATE
 renamed: true
 runtime_options:
   client_version: '3'
+  legacy_features: {__dict__: true, bootstrap3: true, class_names: true, root_container: true}
   server_spec: {base: python310-minimal}
   server_version: python3-sandbox
-  version: 2
+  version: 3
 secrets:
   openai_api_key:
     type: secret
@@ -96,9 +140,6 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/tables.yml
-- client_config: {}
-  server_config: {test_mode: true}
-  source: /runtime/services/anvil/email.yml
 - client_config: {allow_remember_me: true, allow_signup: true, confirm_email: true, enable_automatically: true, remember_me_days: 7, use_email: true, use_facebook: false, use_google: true, use_token: false}
   server_config: {user_table: users}
   source: /runtime/services/anvil/users.yml
@@ -108,5 +149,6 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/anvil/secrets.yml
-startup: {module: Homepage, type: form}
+startup: {module: InTake.IntakeLanding, type: form}
 startup_form: null
+uplink_visible: true

@@ -1,0 +1,15 @@
+components:
+- components:
+  - components: []
+    layout_properties: {grid_position: 'BWRFDE,WMMOAO'}
+    name: column_panel_1
+    properties: {role: outlined-card}
+    type: ColumnPanel
+  layout_properties: {slot: default}
+  name: content_panel
+  properties: {}
+  type: ColumnPanel
+container:
+  properties: {html: '', visible: true}
+  type: HtmlTemplate
+is_package: true
