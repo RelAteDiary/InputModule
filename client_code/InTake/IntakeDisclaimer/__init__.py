@@ -29,18 +29,13 @@ class IntakeDisclaimer(IntakeDisclaimerTemplate):
             prev_button_link="InTake.IntakePledge",
             next_button_link="InTake.IntakeLanding",
         )
-        mc.next_button.set_event_handler(
-          'click',
-          mc._update_question_answer
-        )
-        mc.next_button.set_event_handler(
-          'click',
-          self.create_account_and_navigate
-        )
+        mc.next_button.set_event_handler("click", mc._update_question_answer)
+        mc.next_button.set_event_handler("click", self.create_account_and_navigate)
         self.outlined_card_1.add_component(mc.panel)
 
     def create_account_and_navigate(self, **event_args):
-      # TODO check whether user is logged in first
-      anvil.users.login_with_form()
-      anvil.server.call('intake_merge_guest_and_logged_in')
-      open_form("InTake.IntakeLanding")
+        # TODO check whether user is logged in first
+        if not anvil.users.get_user():
+          anvil.users.login_with_form()
+          anvil.server.call("intake_merge_guest_and_logged_in")
+        open_form("InTake.IntakeLanding")

@@ -21,20 +21,25 @@ def _question_id_to_user_column(question_id):
       return 'p-ack_non_med_disclaimer'
   return ''
 
-def get_guest_id():
+def get_guest_user():
   guest_id= anvil.server.cookies.local.get('guest_id', '')
   if guest_id == '':
-    print('guest_id is empty string')
     guest_id = str(uuid.uuid4())
     anvil.server.cookies.local.set(30, guest_id=guest_id)
-  if len(app_tables.users.search(guest_id=guest_id))==0:
-    print('adding new row to db')
-    app_tables.users.add_row(guest_id=guest_id)
-  return guest_id
+  guest_user = app_tables.users.get(guest_id=guest_id)
+  if guest_user is None:
+    guest_user = app_tables.users.add_row(guest_id=guest_id)
+  return guest_user
+
+def get_user():
+  logged_in_user = anvil.users.get_user()
+  if logged_in_user is None:
+    return get_guest_user()
+  return logged_in_user
 
 @anvil.server.callable
 def intake_merge_guest_and_logged_in():
-  guest_user = app_tables.users.get(guest_id=get_guest_id())
+  guest_user = get_guest_user()
   logged_in_user = anvil.users.get_user()
   if guest_user is None or logged_in_user is None:
     return
