@@ -1,0 +1,17 @@
+components_by_slot:
+  content:
+  - components:
+    - layout_properties: {grid_position: 'KABHZW,NXWTWM'}
+      name: heading_1
+      properties: {text: Diary}
+      type: form:dep_ipbks3iegq5dhg:_Components.Heading
+    - layout_properties: {grid_position: 'KUJEDN,YQTZJZ'}
+      name: button_1
+      properties: {text: 'Add Food or Symptom Entry '}
+      type: form:dep_ipbks3iegq5dhg:_Components.Button
+    layout_properties: {}
+    name: outlined_card_1
+    properties: {role: outlined-card}
+    type: ColumnPanel
+is_package: true
+layout: {type: 'form:dep_ipbks3iegq5dhg:Layouts.NavigationDrawerLayout'}
