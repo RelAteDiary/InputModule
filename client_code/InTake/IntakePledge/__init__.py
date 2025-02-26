@@ -10,7 +10,6 @@ class IntakePledge(IntakePledgeTemplate):
         [goal, pledges] = anvil.server.call(
             "intake_get_answer", ["goal", self.question_id]
         )
-        print(f'goal and pledges are {goal} and {pledges}')
         if goal is None:
           goal_text = ''
         elif goal.startswith("other-"):

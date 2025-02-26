@@ -22,6 +22,11 @@ def _question_id_to_user_column(question_id):
   return ''
 
 def get_guest_user():
+  '''
+  Gets the guest user according to uuid set in the user's cookie.
+  If the uuid is not set or if the guest user row is not found, 
+  creates the guest user.
+  '''
   guest_id= anvil.server.cookies.local.get('guest_id', '')
   if guest_id == '':
     guest_id = str(uuid.uuid4())
@@ -32,6 +37,10 @@ def get_guest_user():
   return guest_user
 
 def get_user():
+  '''
+  Returns the logged in user if the user is logged in, 
+  creates or gets a guest user identified by uuid otherwise.
+  '''
   logged_in_user = anvil.users.get_user()
   if logged_in_user is None:
     return get_guest_user()
@@ -42,6 +51,7 @@ def intake_merge_guest_and_logged_in():
   guest_user = get_guest_user()
   logged_in_user = anvil.users.get_user()
   if guest_user is None or logged_in_user is None:
+    print('WARNING could not merge guest user and logged in user')
     return
   for column in app_tables.users.list_columns():
     if (logged_in_user[column['name']] is None):
@@ -50,8 +60,7 @@ def intake_merge_guest_and_logged_in():
 
 @anvil.server.callable
 def intake_set_answer(question_id, value):
-  guest_id = get_guest_id()
-  user = app_tables.users.get(guest_id=guest_id)
+  user = get_user()
   if user is None:
     print("Something has gone wrong, user is not being found.")
   column = _question_id_to_user_column(question_id)
@@ -61,10 +70,7 @@ def intake_set_answer(question_id, value):
 @anvil.server.callable
 def intake_get_answer(question_ids):
   answers = []
-  if anvil.users.get_user():
-    user = anvil.users.get_user()
-  else:
-    user = app_tables.users.get(guest_id=get_guest_id())
+  user = get_user()
 
   if user is None:
     print("Something has gone wrong, user is not being found.")
@@ -72,10 +78,8 @@ def intake_get_answer(question_ids):
 
   for question_id in question_ids:
     column = _question_id_to_user_column(question_id)
-    print(f'in IntakeQuestions column is {column}')
     if column != '':
       answer=user[column]
-      print(f'in IntakeQuestions answer is {answer}')
       answers.append(answer)
     else:
       answers.append(None)

@@ -26,11 +26,11 @@ class IntakeDisclaimer(IntakeDisclaimerTemplate):
             self.question_id,
             selected=prev_answer,
             has_other_textbox=False,
-            prev_button_link="InTake.IntakePledge",
+            prev_button_link="InTake.IntakeDiets",
             next_button_link="InTake.IntakeLanding",
         )
-        mc.next_button.set_event_handler("click", mc._update_question_answer)
-        mc.next_button.set_event_handler("click", self.create_account_and_navigate)
+        mc.next_button.set_event_handler("click", mc.update_question_answer)
+        mc.next_button.add_event_handler("click", self.create_account_and_navigate)
         self.outlined_card_1.add_component(mc.panel)
 
     def create_account_and_navigate(self, **event_args):
