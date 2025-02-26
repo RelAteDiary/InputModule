@@ -1,7 +1,7 @@
 components:
 - components:
   - components: []
-    layout_properties: {grid_position: 'LSSGIT,IKUQTL'}
+    layout_properties: {grid_position: 'BWRFDE,WMMOAO'}
     name: column_panel_1
     properties: {role: outlined-card}
     type: ColumnPanel

@@ -11,9 +11,11 @@ class CheckBoxQuestion:
                has_other_textbox=True, 
                prev_button_link=None,
                next_button_link=None):
+    print(f'question_id is {question_id}')
+    print(f'selected is None? {selected is None}')
     self.question_id = question_id
     self.has_other_textbox = has_other_textbox
-    self.selected = []
+    self.selected = selected if selected is not None else []
     
     self.panel = CardContentContainer(
       background_color='transparent', border='0px')
@@ -22,7 +24,8 @@ class CheckBoxQuestion:
       self.panel.add_component(callout)
     question = anvil.RichText(content=question, format='markdown')
     self.panel.add_component(question)
-    
+
+    print(f'self.selected is {self.selected}')
     for value in value_to_questions:
       checkbox = Checkbox(
         text=value_to_questions[value],
@@ -34,10 +37,10 @@ class CheckBoxQuestion:
       self.panel.add_component(checkbox)
 
     if has_other_textbox:
-      existing_other_text = [x for x in selected if x.startswith('other-')]
+      existing_other_texts = [x for x in self.selected if x.startswith('other-')]
       self.other_checkbox = Checkbox(
         text='Other',
-        checked = len(existing_other_text) > 0
+        checked = len(existing_other_texts) > 0
       )
       self.other_checkbox.add_event_handler(
         'change', self._show_other_textbox)
@@ -45,8 +48,8 @@ class CheckBoxQuestion:
       
       # TODO P4 this only gets the first other entry
       self.other_text = TextBox(
-        visible=len(existing_other_text) > 0,
-        text='' if len(existing_other_text) == 0 else existing_other_text[0][len('other-'):]
+        visible=len(existing_other_texts) > 0,
+        text='' if len(existing_other_texts) == 0 else existing_other_texts[0][len('other-'):]
       )
       self.panel.add_component(self.other_text)
 
@@ -77,6 +80,7 @@ class CheckBoxQuestion:
   def _change_selected(self, checkbox, value):
     def f(**event_args):
       if checkbox.checked:
+        print(f'self.selected is {self.selected} and value is {value}')
         self.selected.append(value)
       else :
         self.selected.remove(value)

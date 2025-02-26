@@ -5,7 +5,7 @@ from m3.components import RadioGroupPanel, RadioButton, Button, TextBox
 class MultipleChoiceQuestion:
   def __init__(self, question, value_to_questions,
                question_id,
-               selected,
+               selected=None,
                has_other_textbox=True, 
                prev_button_link=None,
                next_button_link=None):
@@ -20,38 +20,42 @@ class MultipleChoiceQuestion:
       self.panel.add_component(
         RadioButton(
           text=value_to_questions[value], value=value,
-          selected = (selected==value))
+          selected=(selected is not None and selected==value))
       )
 
     if has_other_textbox:
       self.other_radio = RadioButton(
-        text='other', value='other', selected = selected.startswith('other-'))
+        text='other', value='other', selected = selected is not None and selected.startswith('other-'))
       self.other_radio.add_event_handler(
         'select', self._show_other_textbox)
       self.panel.add_component(self.other_radio)
-      self.other_text = TextBox(visible=selected.startswith('other-'),
-                               text=selected[len('other-'):])
+      self.other_text = TextBox(visible=selected is not None and selected.startswith('other-'),
+                               text=selected[len('other-'):] if selected is not None and selected.startswith('other-') else '')
       self.panel.add_component(self.other_text)
-      
+
+    flow_panel = FlowPanel(align='center')
+
     if prev_button_link is not None:
       self.prev_button = Button(
-        role='anvil-role-outlined-button',
+        appearance='outlined',
         text='previous')
       self.prev_button.add_event_handler(
         'click',self._update_question_answer)
       self.prev_button.add_event_handler(
         'click', lambda **event_args : open_form(prev_button_link))
-      self.panel.add_component(self.prev_button)
+      flow_panel.add_component(self.prev_button)
       
     if next_button_link is not None:
       self.next_button = Button(
-        role='anvil-role-tonal-button',
+        appearance='filled',
         text='next')
       self.next_button.add_event_handler(
         'click',self._update_question_answer)
       self.next_button.add_event_handler(
         'click', lambda **event_args : open_form(next_button_link))
-      self.panel.add_component(self.next_button)
+      flow_panel.add_component(self.next_button)
+
+    self.panel.add_component(flow_panel)
 
   def _show_other_textbox(self, **event_args):
     if self.other_text is None:
