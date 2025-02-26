@@ -8,4 +8,7 @@ class DiaryChip:
     pass
 
   def get_chip():
-    self.panel = None
+    panel = Card(appearance='filled',orientation='column')
+    panel.add_component(RichText(content='# Diary'))
+    
+    return panel
