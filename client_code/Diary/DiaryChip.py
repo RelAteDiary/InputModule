@@ -7,15 +7,11 @@ class DiaryChip:
   def __init__(self):
     pass
   def get_streak_tracker():
-    streak = anvil.server.call('diary_get_diary_streak')
-    if streak is None:
-      return None
-    if 'recent' in streak:
-      
-    
+    pass
 
   def get_chip():
     panel = Card(appearance='filled',orientation='column')
     panel.add_component(RichText(content='# Diary'))
-    panel.add_component(get_streak_tracker())
+    # panel.add_component(get_streak_tracker())
+    panel.add_component()
     return panel
