@@ -1,0 +1,31 @@
+components: []
+container:
+  event_bindings: {hide: form_hide, show: form_show}
+  properties:
+    html: |
+      <div class="progress-container">
+        <div class="horizontal-line"></div>
+        <div anvil-slot="default" anvil-slot-repeat="default"></div>
+      </div>
+
+      <style>
+        .progress-container {
+          position: relative;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .horizontal-line {
+          position: absolute;
+          top: 50%;
+          left: 5px;
+          width: calc(100% - 10px);
+          height: 3px;
+          background-color: black;
+          transform: translateY(-50%);
+          z-index: -1;
+        }
+      </style>
+  type: HtmlTemplate
+custom_component: true
+is_package: true
