@@ -2,7 +2,7 @@ import anvil.secrets
 import anvil.google.auth, anvil.google.drive, anvil.google.mail
 from anvil.google.drive import app_files
 import anvil.users
-import anvil.tables as tables
+import anvil.tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
@@ -21,6 +21,7 @@ def _question_id_to_user_column(question_id):
       return 'p-ack_non_med_disclaimer'
   return ''
 
+@anvil.tables.in_transaction
 def get_guest_user():
   '''
   Gets the guest user according to uuid set in the user's cookie.
