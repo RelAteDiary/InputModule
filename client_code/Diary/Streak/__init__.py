@@ -1,5 +1,6 @@
 from ._anvil_designer import StreakTemplate
-from m3.components import IconButton
+from m3.components import IconButton, Text
+from anvil import FlowPanel
 
 from anvil.js import window
 
@@ -13,7 +14,10 @@ class Streak(StreakTemplate):
   def redraw(self):
     self.clear()
     for i in range(self.num_circles):
-      self.add_component(IconButton(text=i, icon='mi:check', appearance='tonal'))
+      day = FlowPanel()
+      day.add_component(IconButton(text=i, icon='mi:check', appearance='tonal'))
+      day.add_component(Text(text='Feb 2'))
+      self.add_component(day)
       # self.add_component(IconButton(text=i, icon='mi:close', appearance='tonal', enabled=False))
       # self.add_component(IconButton(text=i, icon='mi:snooze', appearance='tonal', enabled=False))
 
