@@ -1,14 +1,26 @@
 allow_embedding: false
 db_schema:
-  diarynotes:
+  diary:
     client: none
     columns:
-    - admin_ui: {width: 200}
-      name: author
+    - admin_ui: {order: 0, width: 200}
+      name: user
       target: users
       type: link_single
+    - admin_ui: {order: 1, width: 200}
+      name: time
+      type: datetime
+    - admin_ui: {order: 2, width: 200}
+      name: dish
+      type: simpleObject
+    - admin_ui: {order: 3, width: 200}
+      name: symptom
+      type: simpleObject
+    - admin_ui: {order: 4, width: 200}
+      name: notes
+      type: string
     server: full
-    title: DiaryNotes
+    title: Diary
   experiments:
     client: none
     columns:
@@ -104,9 +116,6 @@ db_schema:
     - admin_ui: {order: 13, width: 200}
       name: p-ack_non_med_disclaimer
       type: bool
-    - admin_ui: {order: 14, width: 200}
-      name: d-diary
-      type: simpleObject
     server: full
     title: Users
 dependencies:
