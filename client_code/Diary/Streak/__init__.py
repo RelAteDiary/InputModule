@@ -14,9 +14,9 @@ class Streak(StreakTemplate):
   def redraw(self):
     self.clear()
     for i in range(self.num_circles):
-      day = FlowPanel()
-      day.add_component(IconButton(text=i, icon='mi:check', appearance='tonal'))
-      day.add_component(Text(text='Feb 2'))
+      day = FlowPanel(align='center')
+      day.add_component(IconButton( icon='mi:check', appearance='tonal'))
+      day.add_component(Text(text='Feb 2',align='center'))
       self.add_component(day)
       # self.add_component(IconButton(text=i, icon='mi:close', appearance='tonal', enabled=False))
       # self.add_component(IconButton(text=i, icon='mi:snooze', appearance='tonal', enabled=False))
