@@ -104,6 +104,9 @@ db_schema:
     - admin_ui: {order: 13, width: 200}
       name: p-ack_non_med_disclaimer
       type: bool
+    - admin_ui: {order: 14, width: 200}
+      name: d-diary
+      type: simpleObject
     server: full
     title: Users
 dependencies:
