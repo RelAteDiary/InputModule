@@ -9,10 +9,12 @@ from anvil.js import window
 
 class Streak(StreakTemplate):
   def __init__(self, **properties):
+    self.unit_test = True
     self.init_components(**properties)
     self.data = {}
-    # self.data['diary_entries'] = self.parent.data['diary_entries']
-    # self.data['diary_entries'] = anvil.server.call('diary_get_entries')
+    if not self.unit_test:
+      # self.data['diary_entries'] = self.parent.data['diary_entries']
+      self.data["diary_entries"] = anvil.server.call("diary_get_entries")
     self.data["streak"] = self.to_streak()
     self.num_circles = 0
     self.on_resize()
@@ -21,18 +23,45 @@ class Streak(StreakTemplate):
     """
     self.data['diary_entries'] to [{date: Datetime, has_entry: Bool, snooze: Bool}]
     """
-    return [
-      {"date": datetime(2017, 12, 31), "has_entry": True, "snooze": False},
-      {"date": datetime(2017, 12, 30), "has_entry": False, "snooze": True},
-      {"date": datetime(2017, 12, 29), "has_entry": False, "snooze": False},
-    ]
+    if self.unit_test:
+      return [
+        {"date": datetime(2017, 12, 31), "has_entry": True, "snooze": False},
+        {"date": datetime(2017, 12, 30), "has_entry": False, "snooze": True},
+        {"date": datetime(2017, 12, 29), "has_entry": False, "snooze": False},
+      ]
 
-  def days_streak(self):
-    pass
+    streak = []
+    seen_date = set()
+    for diary_entry in self.data["diary_entries"]:
+      if diary_entry["time"].date() not in seen_date:
+        seen_date.add(diary_entry["time"].date())
+        streak_entry = {}
+        streak_entry["date"] = diary_entry["time"].date()
+        streak_entry["has_entry"] = True
+        streak_entry["snooze"] = False
+        streak.append(streak_entry)
+    streak.sort(key=lambda streak_entry: streak_entry["date"])
+    return streak
 
+  def latest_consecutive_streak(self, with_snooze=True):
+    if self.data['streak'] is None:
+      self.data['streak'] = self.to_streak()
+    today = datetime.now().date()
+    track = len(self.data['streak']) - 1
+    consecutive_streak = 0
+    while with_snooze or today==self.data['streak'][track]:
+      consecutive_streak += 1
+      if today!=self.data['streak'][track]:
+        with_snooze = False
+    # snoozing should only be active if the user has at least
+    # one entry
+    if consecutive_streak == 1:
+      consecutive_streak = 0
+    return consecutive_streak
+      
   def add_new_entry_chip(self):
-    pass
-  
+    if 
+
   def older_entries_chip(self):
     pass
 
