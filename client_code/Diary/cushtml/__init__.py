@@ -8,12 +8,12 @@ class cushtml(cushtmlTemplate):
   def __init__(self, is_unit_test=True, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.is_unit_test = is_unit_test
+    # self.is_unit_test = is_unit_test
     self.data={}
 
-    if not is_unit_test:
-      self.data["diary_entries"] = anvil.server.call("diary_get_entries")
-    self.data["streak"] = self.to_streak()
+    # if not is_unit_test:
+    #   self.data["diary_entries"] = anvil.server.call("diary_get_entries")
+    # self.data["streak"] = self.to_streak()
 
     # self.outlined_card_1.add_component(StreakMessage())
     self.outlined_card_1.add_component(StreakLine())
