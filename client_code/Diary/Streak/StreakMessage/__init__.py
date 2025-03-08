@@ -14,8 +14,9 @@ class StreakMessage(StreakMessageTemplate):
     consecutive_streak = self.latest_consecutive_streak()
     consecutive_streak = 1
     # TODO there should be more options for messages. 
+    callout = None
+    message = None
     if consecutive_streak == 0:
-      callout = None
       message = 'Life’s hectic, but don’t forget to take care of yourself. Let’s get logging in your diary - it\'s important!'
     elif consecutive_streak == 1:
       callout = 'Keep it up! The first steps are always the hardest.'
@@ -29,8 +30,9 @@ class StreakMessage(StreakMessageTemplate):
       callout = f'Bravo! A {consecutive_streak} days streak!'
       message = 'You\'re getting closer to figuring things out with every entry!'
     if callout is not None:
-      self.add_component(RichText(content='# ' + callout))
-    self.add_component(RichText(content=message))
+      self.add_component(RichText(content='#### ' + callout))
+    if message is not None:
+      self.add_component(RichText(content=message))
   
   def latest_consecutive_streak(self, with_snooze=True):
     if self.data["streak"] is None:

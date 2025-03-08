@@ -63,6 +63,7 @@ class StreakLine(StreakLineTemplate):
 
   def redraw(self):
     self.clear()
+    
     self.add_component(self.older_entries_chip())
     for day in self.data["streak"][len(self.data['streak']) - self.num_circles:]:
       self.add_component(self.get_day_chip(day))

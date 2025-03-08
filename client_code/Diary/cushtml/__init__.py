@@ -1,11 +1,10 @@
-from ._anvil_designer import StreakTemplate
+from ._anvil_designer import cushtmlTemplate
 import anvil.server
 from datetime import datetime
-from .StreakLine import StreakLine
-from .StreakMessage import StreakMessage
+from ..Streak.StreakLine import StreakLine
 
 
-class Streak(StreakTemplate):
+class cushtml(cushtmlTemplate):
   def __init__(self, is_unit_test=True, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
