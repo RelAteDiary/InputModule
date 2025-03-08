@@ -16,8 +16,8 @@ class Streak(StreakTemplate):
       self.data["diary_entries"] = anvil.server.call("diary_get_entries")
     self.data["streak"] = self.to_streak()
 
-    # self.outlined_card_1.add_component(StreakMessage())
-    self.outlined_card_1.add_component(StreakLine())
+    self.card_content_container_1.add_component(StreakMessage())
+    self.card_content_container_1.add_component(StreakLine())
 
    
   def to_streak(self):
