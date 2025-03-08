@@ -19,7 +19,14 @@ class Streak(StreakTemplate):
     self.card_content_container_1.add_component(StreakMessage())
     self.card_content_container_1.add_component(StreakLine())
 
-   
+    self.set_event_handler('x-add-entry', self.add_entry)
+    self.set_event_handler('x-show-entries', self.show_entries)
+
+  def add_entry(self, **event_args):
+    pass
+  def show_entries(self, sender, **event_args):
+    pass
+
   def to_streak(self):
     """
     self.data['diary_entries'] to [{date: Datetime, has_entry: Bool, snooze: Bool}]

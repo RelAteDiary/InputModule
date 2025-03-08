@@ -22,6 +22,9 @@ class StreakLine(StreakLineTemplate):
     self.num_circles = 0
     self.on_resize()
 
+  def handle_chip_click(self, sender, **event_args):
+    print(f'handling chip click from {sender.tag}')
+
   # TODO move this into a unit test
   def get_test_streak(self):
     streak = [
@@ -41,7 +44,9 @@ class StreakLine(StreakLineTemplate):
 
   # TODO this should fire off an event to allow user to add to entries
   def get_new_entry_chip(self):
-    return StreakLineChip(icon="mi:add", enabled=True, text="Add\nEntry")
+    chip = StreakLineChip(icon="mi:add", enabled=True, text="Add\nEntry")
+    chip.add_event_handler('x-streak-line-chip-click', self.handle_chip_click)
+    return chip
 
   # TODO chip should fire off an event to show that day when clicked
   def get_day_chip(self, day):
