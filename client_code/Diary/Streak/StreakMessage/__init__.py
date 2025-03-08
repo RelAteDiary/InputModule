@@ -1,26 +1,36 @@
 from ._anvil_designer import StreakMessageTemplate
 from datetime import datetime
+from anvil import RichText
 
 class StreakMessage(StreakMessageTemplate):
-  def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
+  def __init__(self, is_unit_test=True, **properties):
     self.init_components(**properties)
-    if not self.unit_test:
+    self.data = {}
+    self.is_unit_test = is_unit_test
+    if not is_unit_test:
       self.data['streak'] = self.parent.data['streak']
     else:
       self.data["streak"] = self.get_test_streak()
     consecutive_streak = self.latest_consecutive_streak()
+    consecutive_streak = 1
+    # TODO there should be more options for messages. 
     if consecutive_streak == 0:
       callout = None
       message = 'Life’s hectic, but don’t forget to take care of yourself. Let’s get logging in your diary - it\'s important!'
     elif consecutive_streak == 1:
-      callout = 'Keep it up!'
+      callout = 'Keep it up! The first steps are always the hardest.'
     elif consecutive_streak < 5:
-      callout = f'Way to go on your {consecutive_streak} day streak!'
+      callout = f'Way to go on your {consecutive_streak} days streak!'
       message = 'Great job sticking with it. You\'re really taking charge of your health!'
     elif consecutive_streak < 10:
-            callout = f'Way to go on your {consecutive_streak} streak!'
-    self.add_component()
+      callout = f'Nicely done on your {consecutive_streak} days streak!'
+      message = 'Amazing job staying on top of your diary. Identifying patterns in your diary is the most valuable tool for understanding things clearly.'
+    else:
+      callout = f'Bravo! A {consecutive_streak} days streak!'
+      message = 'You\'re getting closer to figuring things out with every entry!'
+    if callout is not None:
+      self.add_component(RichText(content='# ' + callout))
+    self.add_component(RichText(content=message))
   
   def latest_consecutive_streak(self, with_snooze=True):
     if self.data["streak"] is None:
