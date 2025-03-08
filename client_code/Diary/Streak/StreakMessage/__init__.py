@@ -1,5 +1,5 @@
 from ._anvil_designer import StreakMessageTemplate
-from datetime import datetime
+from datetime import datetime, timedelta
 from anvil import RichText
 
 class StreakMessage(StreakMessageTemplate):
@@ -38,11 +38,16 @@ class StreakMessage(StreakMessageTemplate):
     if self.data["streak"] is None:
       self.data["streak"] = self.to_streak()
     today = datetime.now().date()
-    track = len(self.data["streak"]) - 1
+    pos = len(self.data["streak"]) - 1
+    day = today
     consecutive_streak = 0
-    while with_snooze or today == self.data["streak"][track]:
+    while with_snooze or day == self.data["streak"][pos]:
       consecutive_streak += 1
-      if today != self.data["streak"][track]:
+      pos -= 1
+      day -= timedelta(days=1)  
+      # User might enter an entry later today, so don't count it as a missed date.
+      # Otherwise, use up their snooze
+      if day!= today and day != self.data["streak"][pos]:
         with_snooze = False
     # snoozing should only be active if the user has at least
     # one entry
