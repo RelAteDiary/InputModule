@@ -3,6 +3,7 @@ import anvil.server
 from datetime import datetime
 from .StreakLine import StreakLine
 from .StreakMessage import StreakMessage
+from m3.components import Card
 
 
 class Streak(StreakTemplate):
@@ -16,8 +17,11 @@ class Streak(StreakTemplate):
       self.data["diary_entries"] = anvil.server.call("diary_get_entries")
     self.data["streak"] = self.to_streak()
 
-    self.card_content_container_1.add_component(StreakMessage())
-    self.card_content_container_1.add_component(StreakLine())
+    self.card = Card(appearance='outlined',border='rgba(0,0,0,0.001)')
+    self.add_component(self.card)
+
+    self.card.add_component(StreakMessage())
+    self.card.add_component(StreakLine())
 
     self.set_event_handler('x-add-entry', self.add_entry)
     self.set_event_handler('x-show-entries', self.show_entries)
