@@ -23,7 +23,7 @@ container:
           height: 3px;
           background-color: black;
           transform: translateY(-50%);
-          z-index: -1;
+          /* z-index: -1; */
         }
       </style>
   type: HtmlTemplate
