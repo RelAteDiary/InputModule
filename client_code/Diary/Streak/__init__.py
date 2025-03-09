@@ -3,7 +3,7 @@ import anvil.server
 from datetime import datetime
 from .StreakLine import StreakLine
 from .StreakMessage import StreakMessage
-from m3.components import Card
+from m3.components import Card, CardContentContainer
 
 
 class Streak(StreakTemplate):
@@ -11,27 +11,22 @@ class Streak(StreakTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.is_unit_test = is_unit_test
-    self.data={}
+    self.data = {}
+    self.data["streak"] = self.get_streak_data()
 
-    if not is_unit_test:
-      self.data["diary_entries"] = anvil.server.call("diary_get_entries")
-    self.data["streak"] = self.to_streak()
-
-    self.card = Card(appearance='outlined',border='rgba(0,0,0,0.001)')
+    self.card = Card(appearance="outlined", border="rgba(0,0,0,0.001)")
     self.add_component(self.card)
+    self.card_content_container = CardContentContainer()
+    self.card.add_component(self.card_content_container)
 
-    self.card.add_component(StreakMessage())
-    self.card.add_component(StreakLine())
+    self.card_content_container.add_component(StreakMessage())
+    self.streak_line = StreakLine()
+    self.card_content_container.add_component(self.streak_line)
+    self.streak_line.add_event_handler(
+      "x-new-entry", lambda **args: self.raise_event("x-new-entry")
+    )
 
-    self.set_event_handler('x-add-entry', self.add_entry)
-    self.set_event_handler('x-show-entries', self.show_entries)
-
-  def add_entry(self, **event_args):
-    pass
-  def show_entries(self, sender, **event_args):
-    pass
-
-  def to_streak(self):
+  def get_streak_data(self):
     """
     self.data['diary_entries'] to [{date: Datetime, has_entry: Bool, snooze: Bool}]
     """
@@ -51,6 +46,7 @@ class Streak(StreakTemplate):
       streak.reverse()
       return streak
 
+    self.data["diary_entries"] = anvil.server.call("diary_get_entries")
     streak = []
     seen_date = set()
     for diary_entry in self.data["diary_entries"]:

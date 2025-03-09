@@ -10,34 +10,35 @@ from anvil.js import window
 # TODO diary_entries should be passed in from parent class to save a server call
 # TODO button clicks should fire off an event to parent
 
+
 class StreakLine(StreakLineTemplate):
   def __init__(self, is_unit_test=False, **properties):
     self.unit_test = True
     self.init_components(**properties)
     self.data = {}
     if not self.unit_test:
-      self.data['streak'] = self.parent.data['streak']
+      self.data["streak"] = self.parent.data["streak"]
     else:
       self.data["streak"] = self.get_test_streak()
     self.num_circles = 0
     self.on_resize()
 
   def handle_chip_click(self, sender, **event_args):
-    print(f'handling chip click from {sender.tag}')
+    print(f"handling chip click from {sender.tag}")
 
   # TODO move this into a unit test
   def get_test_streak(self):
     streak = [
-        {"date": datetime(2017, 12, 31), "has_entry": True, "snooze": False},
-        {"date": datetime(2017, 12, 30), "has_entry": False, "snooze": True},
-        {"date": datetime(2017, 12, 29), "has_entry": False, "snooze": False},
-        {"date": datetime(2017, 12, 28), "has_entry": True, "snooze": False},
-        {"date": datetime(2017, 12, 27), "has_entry": False, "snooze": False},
-        {"date": datetime(2017, 12, 26), "has_entry": False, "snooze": False},
-        {"date": datetime(2017, 12, 25), "has_entry": False, "snooze": False},
-        {"date": datetime(2017, 12, 24), "has_entry": False, "snooze": False},
-        {"date": datetime(2017, 12, 23), "has_entry": False, "snooze": False},
-        {"date": datetime(2017, 12, 22), "has_entry": False, "snooze": False},
+      {"date": datetime(2017, 12, 31), "has_entry": True, "snooze": False},
+      {"date": datetime(2017, 12, 30), "has_entry": False, "snooze": True},
+      {"date": datetime(2017, 12, 29), "has_entry": False, "snooze": False},
+      {"date": datetime(2017, 12, 28), "has_entry": True, "snooze": False},
+      {"date": datetime(2017, 12, 27), "has_entry": False, "snooze": False},
+      {"date": datetime(2017, 12, 26), "has_entry": False, "snooze": False},
+      {"date": datetime(2017, 12, 25), "has_entry": False, "snooze": False},
+      {"date": datetime(2017, 12, 24), "has_entry": False, "snooze": False},
+      {"date": datetime(2017, 12, 23), "has_entry": False, "snooze": False},
+      {"date": datetime(2017, 12, 22), "has_entry": False, "snooze": False},
     ]
     streak.reverse()
     return streak
@@ -45,7 +46,9 @@ class StreakLine(StreakLineTemplate):
   # TODO this should fire off an event to allow user to add to entries
   def get_new_entry_chip(self):
     chip = StreakLineChip(icon="mi:add", enabled=True, text="Add\nEntry")
-    chip.add_event_handler('x-streak-line-chip-click', self.handle_chip_click)
+    chip.add_event_handler(
+      "x-streak-line-chip-click", lambda **args: self.raise_event("x-new-entry")
+    )
     return chip
 
   # TODO chip should fire off an event to show that day when clicked
@@ -68,11 +71,13 @@ class StreakLine(StreakLineTemplate):
 
   def redraw(self):
     self.clear()
-    
+
     self.add_component(self.older_entries_chip())
-    for day in self.data["streak"][len(self.data['streak']) - self.num_circles:]:
+    for day in self.data["streak"][len(self.data["streak"]) - self.num_circles :]:
       self.add_component(self.get_day_chip(day))
-    self.add_component(self.get_new_entry_chip())
+
+    new_entry_chip = self.get_new_entry_chip()
+    self.add_component(new_entry_chip)
 
   def on_resize(self, *e):
     width = window.innerWidth
