@@ -24,3 +24,8 @@ def diary_get_entries(latest=None, days_prior=7, fetch_only_columns=None):
   # Search iterator is lazy. To avoid additional calls to server, materialize
   # this list, which should be quite short.
   return [x for x in entries]
+
+@anvil.server.callable
+def diary_add_entry(time=None, note=None, type=None):
+  return True
+  pass

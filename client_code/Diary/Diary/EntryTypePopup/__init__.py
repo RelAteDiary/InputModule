@@ -8,5 +8,5 @@ class EntryTypePopup(EntryTypePopupTemplate):
     flow_panel = FlowPanel(align="center", spacing="small")
     flow_panel.add_component(Button(icon='mi:nutrition',text='Food Entry'))
     flow_panel.add_component(Button(icon='mi:sentiment_stressed',text='Symptoms Entry'))
-    flow_panel.add_component(Button(icon='mi:sticky_note_2',text='Other Event'))
+    flow_panel.add_component(Button(icon='mi:sticky_note_2',text='Event or Note'))
     self.add_component(flow_panel)
