@@ -10,11 +10,12 @@ from m3.components import (
 )
 from anvil import Label, DatePicker, FlowPanel, alert, open_form
 from datetime import datetime
+from anvil_extras import Slider
 import anvil.server
 
 
 class DiaryEntryForm(DiaryEntryFormTemplate):
-  def __init__(self, type="note", **properties):
+  def __init__(self, type="symptom", **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.set_consts()
@@ -45,7 +46,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
   def set_consts(self):
     self.consts = {}
     self.consts["note_colors"] = {
-      'default': '#000000',
+      "default": "#000000",
       "red": "#FE2712",
       "orange": "#FB9902",
       "yellow": "#FEFE33",
@@ -111,9 +112,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
       Label(text="(OPTIONAL) Add a color to this note to stay organized.")
     )
     self.color_menu = ButtonMenu(
-      text="Note color", appearance="outlined", icon="mi:circle", icon_color='#000000'
+      text="Note color", appearance="outlined", icon="mi:circle", icon_color="#000000"
     )
-    self.entry['note_color'] = '#000000'
+    self.entry["note_color"] = "#000000"
     container.add_component(self.color_menu)
 
     color_menu_item = []
@@ -132,8 +133,16 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     self.entry["note_color"] = args["sender"].leading_icon_color
 
   def add_symptom_entry(self, container):
-    panel = Card(appearance="tonal")
-    container.add_component(panel)
+    card = Card(appearance="filled")
+    container.add_component(card)
+
+    card_content = CardContentContainer()
+    card.add_component(card_content)
+
+    slider = Slider.Slider(start=3, min=1, max=5, step=1)
+    card_content.add_component(slider)
+    slider.add_event_handler('change', lambda **args : print (args['sender'].value))
+    severity_container = FlowPanel()
 
     # TODO finish this function
 
