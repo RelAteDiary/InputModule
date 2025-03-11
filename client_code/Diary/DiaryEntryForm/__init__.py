@@ -14,7 +14,7 @@ import anvil.server
 
 
 class DiaryEntryForm(DiaryEntryFormTemplate):
-  def __init__(self, type="symptom", **properties):
+  def __init__(self, type="note", **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.set_consts()
@@ -34,7 +34,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     card.add_component(entry_container)
     if type == "note":
       self.add_notes_entry(entry_container)
-    elif type == 'symptom':
+    elif type == "symptom":
       self.add_symptom_entry(entry_container)
     # TODO food and symptom entry
 
@@ -44,7 +44,15 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
   def set_consts(self):
     self.consts = {}
-    self.consts["note_colors"] = {"red": "#FE2712"}
+    self.consts["note_colors"] = {
+      'default': '#000000',
+      "red": "#FE2712",
+      "orange": "#FB9902",
+      "yellow": "#FEFE33",
+      "green": "#66B032",
+      "blue": "#0247FE",
+      "purple": "#8601AF",
+    }
 
   def add_date_entry_component(self, container):
     if self.type == "food":
@@ -103,8 +111,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
       Label(text="(OPTIONAL) Add a color to this note to stay organized.")
     )
     self.color_menu = ButtonMenu(
-      text="Note color", appearance="tonal", icon="mi:circle"
+      text="Note color", appearance="outlined", icon="mi:circle", icon_color='#000000'
     )
+    self.entry['note_color'] = '#000000'
     container.add_component(self.color_menu)
 
     color_menu_item = []
@@ -121,9 +130,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
   def select_note_color(self, **args):
     self.color_menu.icon_color = args["sender"].leading_icon_color
     self.entry["note_color"] = args["sender"].leading_icon_color
-    
+
   def add_symptom_entry(self, container):
-    panel = Card(appearance='tonal')
+    panel = Card(appearance="tonal")
     container.add_component(panel)
 
     # TODO finish this function
