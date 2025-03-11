@@ -26,6 +26,6 @@ def diary_get_entries(latest=None, days_prior=7, fetch_only_columns=None):
   return [x for x in entries]
 
 @anvil.server.callable
-def diary_add_entry(time=None, note=None, type=None):
+def diary_add_entry(time=None, note=None, note_color=None, type=None):
   return True
   pass

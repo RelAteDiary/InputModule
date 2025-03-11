@@ -1,4 +1,4 @@
-from ._anvil_designer import DiaryEntriesTemplate
+from ._anvil_designer import DiaryEntryFormTemplate
 from m3.components import (
   Card,
   CardContentContainer,
@@ -13,8 +13,8 @@ from datetime import datetime
 import anvil.server
 
 
-class DiaryEntries(DiaryEntriesTemplate):
-  def __init__(self, type="note", **properties):
+class DiaryEntryForm(DiaryEntryFormTemplate):
+  def __init__(self, type="symptom", **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.set_consts()
@@ -34,6 +34,8 @@ class DiaryEntries(DiaryEntriesTemplate):
     card.add_component(entry_container)
     if type == "note":
       self.add_notes_entry(entry_container)
+    elif type == 'symptom':
+      self.add_symptom_entry(entry_container)
     # TODO food and symptom entry
 
     buttons_content_container = CardContentContainer()
@@ -100,18 +102,31 @@ class DiaryEntries(DiaryEntriesTemplate):
     container.add_component(
       Label(text="(OPTIONAL) Add a color to this note to stay organized.")
     )
-    self.color_menu = ButtonMenu(text="Note color", appearance="tonal", icon='mi:circle')
+    self.color_menu = ButtonMenu(
+      text="Note color", appearance="tonal", icon="mi:circle"
+    )
     container.add_component(self.color_menu)
 
     color_menu_item = []
     for color in self.consts["note_colors"]:
-      option = MenuItem(background_color=self.consts["note_colors"][color], text=color)
+      option = MenuItem(
+        leading_icon="mi:circle",
+        leading_icon_color=self.consts["note_colors"][color],
+        text=color,
+      )
       option.add_event_handler("click", self.select_note_color)
       color_menu_item.append(option)
     self.color_menu.menu_items = color_menu_item
 
   def select_note_color(self, **args):
-    self.color_menu.icon_color=args['sender'].background_color
+    self.color_menu.icon_color = args["sender"].leading_icon_color
+    self.entry["note_color"] = args["sender"].leading_icon_color
+    
+  def add_symptom_entry(self, container):
+    panel = Card(appearance='tonal')
+    container.add_component(panel)
+
+    # TODO finish this function
 
   def submit_entry(self, **args):
     # TODO data validation
