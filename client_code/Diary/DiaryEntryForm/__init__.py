@@ -8,7 +8,8 @@ from m3.components import (
   TextArea,
   InteractiveCard,
 )
-from anvil import Label, DatePicker, FlowPanel, alert, open_form
+from anvil import Label, DatePicker, DataGrid, ColumnPanel, FlowPanel, Image, alert, open_form
+from .SymptomEmoticons import SymptomEmoticons
 from datetime import datetime
 from anvil_extras import Slider
 import anvil.server
@@ -139,11 +140,30 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     card_content = CardContentContainer()
     card.add_component(card_content)
 
+    card_content.add_component(Label(text='How severe was the symptom?'))
     slider = Slider.Slider(start=3, min=1, max=5, step=1)
     card_content.add_component(slider)
     slider.add_event_handler('change', lambda **args : print (args['sender'].value))
-    severity_container = FlowPanel()
 
+    # grid = DataGrid()
+    # card_content.add_componet(grid)
+
+    card_content.add_component(SymptomEmoticons())
+    
+    # pip_icons = ColumnPanel(wrap_on='never')
+    # card_content.add_component(pip_icons)
+    
+    # column = ColumnPanel()
+    # calm_emoji = Image(display_mode='zoom_to_fill',source='_/theme/material_icons/sentiment_calm.svg')
+    # column.add_component(calm_emoji)
+    # pip_icons.add_component(column)
+    
+    # pip_icons.add_component(Image(display_mode='zoom_to_fill',source='_/theme/material_icons/sentiment_calm.svg'))
+    # pip_icons.add_component(Image(display_mode='zoom_to_fill',source='_/theme/material_icons/sentiment_calm.svg'))
+    # pip_icons.add_component(Image(display_mode='zoom_to_fill',source='_/theme/material_icons/sentiment_calm.svg'))
+    # pip_icons.add_component(Image(display_mode='zoom_to_fill',source='_/theme/material_icons/sentiment_calm.svg'))
+    # pip_icons.add_component(Image(display_mode='zoom_to_fill',source='_/theme/material_icons/sentiment_calm.svg'))
+    
     # TODO finish this function
 
   def submit_entry(self, **args):
