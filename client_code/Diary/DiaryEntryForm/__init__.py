@@ -145,24 +145,8 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     card_content.add_component(slider)
     slider.add_event_handler('change', lambda **args : print (args['sender'].value))
 
-    # grid = DataGrid()
-    # card_content.add_componet(grid)
-
     card_content.add_component(SymptomEmoticons())
     
-    # pip_icons = ColumnPanel(wrap_on='never')
-    # card_content.add_component(pip_icons)
-    
-    # column = ColumnPanel()
-    # calm_emoji = Image(display_mode='zoom_to_fill',source='_/theme/material_icons/sentiment_calm.svg')
-    # column.add_component(calm_emoji)
-    # pip_icons.add_component(column)
-    
-    # pip_icons.add_component(Image(display_mode='zoom_to_fill',source='_/theme/material_icons/sentiment_calm.svg'))
-    # pip_icons.add_component(Image(display_mode='zoom_to_fill',source='_/theme/material_icons/sentiment_calm.svg'))
-    # pip_icons.add_component(Image(display_mode='zoom_to_fill',source='_/theme/material_icons/sentiment_calm.svg'))
-    # pip_icons.add_component(Image(display_mode='zoom_to_fill',source='_/theme/material_icons/sentiment_calm.svg'))
-    # pip_icons.add_component(Image(display_mode='zoom_to_fill',source='_/theme/material_icons/sentiment_calm.svg'))
     
     # TODO finish this function
 

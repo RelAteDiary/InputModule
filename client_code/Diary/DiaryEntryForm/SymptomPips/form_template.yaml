@@ -1,9 +1,0 @@
-components:
-- layout_properties: {slot: default}
-  name: grid_panel_1
-  properties: {role: null}
-  type: GridPanel
-container:
-  properties: {html: ''}
-  type: HtmlTemplate
-is_package: true
