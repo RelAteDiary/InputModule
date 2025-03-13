@@ -13,6 +13,7 @@ unique_ids:
     Diary.Diary.EntryTypePopup: '174149943322440087097321.0925'
     Diary.DiaryEntryForm: '1741503647441459403662522.7698'
     Diary.DiaryEntryForm.SymptomEmoticons: '1741754394265703663369872.8458'
+    Diary.DiaryEntryForm.SymptomPips: '1741894473120224960475074.3921'
     Diary.Streak: '1741316677079673847600136.0325'
     Diary.Streak.StreakLine: '1740891541178782332311486.4106'
     Diary.Streak.StreakLineChip: '1741237934105469182240197.21234'

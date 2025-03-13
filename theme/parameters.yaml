@@ -333,3 +333,4 @@ roles:
   name: input-error
 - components: [Button]
   name: secondary-button
+- {name: 20p-width}
