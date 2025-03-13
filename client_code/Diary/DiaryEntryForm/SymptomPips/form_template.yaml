@@ -1,0 +1,67 @@
+components: []
+container:
+  properties:
+    html: |
+      <center style="font-style: italic; color: #888; margin: 3em">
+        <style>
+          .symptom_severity_pips_container {
+            width: 100%;
+            table-layout: fixed;
+            text-align: center;
+          }
+          .symptom_severity_pips_container td {
+            padding-left: 0px;
+            padding-right: 0px;
+            padding-top: 0px;
+          }
+          .symptom_severity_pip_emoticon_image {
+            width: 100%;
+          }
+        </style>
+        <table class="symptom_severity_pips_container">
+          <tbody>
+            <tr>
+              <td>
+                <img
+                  src="_/theme/material_icons/sentiment_sad.svg"
+                  class="symptom_severity_pip_emoticon_image"
+                />
+              </td>
+              <td>
+                <img
+                  src="_/theme/material_icons/sentiment_dissatisfied.svg"
+                  class="symptom_severity_pip_emoticon_image"
+                />
+              </td>
+              <td>
+                <img
+                  src="_/theme/material_icons/sentiment_neutral.svg"
+                  class="symptom_severity_pip_emoticon_image"
+                />
+              </td>
+              <td>
+                <img
+                  src="_/theme/material_icons/sentiment_content.svg"
+                  class="symptom_severity_pip_emoticon_image"
+                />
+              </td>
+              <td>
+                <img
+                  src="_/theme/material_icons/sentiment_calm.svg"
+                  class="symptom_severity_pip_emoticon_image"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Incapacitating</td>
+              <td>Severe</td>
+              <td>Moderate</td>
+              <td>Mild</td>
+              <td>Unnoticeable</td>
+            </tr>
+          </tbody>
+        </table>
+      </center>
+      <div anvil-slot="default"></div>
+  type: HtmlTemplate
+is_package: true

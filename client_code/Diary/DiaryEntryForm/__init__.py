@@ -9,7 +9,7 @@ from m3.components import (
   InteractiveCard,
 )
 from anvil import Label, DatePicker, DataGrid, ColumnPanel, FlowPanel, Image, alert, open_form
-from .SymptomEmoticons import SymptomEmoticons
+from .SymptomPips import SymptomPips
 from datetime import datetime
 from anvil_extras import Slider
 import anvil.server
@@ -145,7 +145,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     card_content.add_component(slider)
     slider.add_event_handler('change', lambda **args : print (args['sender'].value))
 
-    card_content.add_component(SymptomEmoticons())
+    card_content.add_component(SymptomPips())
     
     
     # TODO finish this function

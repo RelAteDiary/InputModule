@@ -5,9 +5,9 @@ components:
       name: image_1_copy_5
       properties: {display_mode: fill_width, height: 131, role: null, source: _/theme/material_icons/sentiment_sad.svg}
       type: Image
-    - layout_properties: {grid_position: 'KFMANT,UGTURL'}
+    - layout_properties: {full_width_row: true, grid_position: 'KFMANT,UGTURL'}
       name: text_1_copy
-      properties: {text: dsafdas}
+      properties: {align: center, text: Incapacitating}
       type: form:dep_ipbks3iegq5dhg:_Components.Text
     layout_properties: {grid_position: 'MWAPPC,GJDURP'}
     name: column_panel_2
@@ -18,9 +18,9 @@ components:
       name: image_1_copy_copy
       properties: {display_mode: fill_width, height: 129, source: _/theme/material_icons/sentiment_dissatisfied.svg}
       type: Image
-    - layout_properties: {grid_position: 'XAEXXU,GKMYQF'}
+    - layout_properties: {full_width_row: true, grid_position: 'XAEXXU,GKMYQF'}
       name: text_1
-      properties: {text: dsafdas}
+      properties: {align: center, text: Severe}
       type: form:dep_ipbks3iegq5dhg:_Components.Text
     layout_properties: {grid_position: 'MWAPPC,HJQUPA'}
     name: column_panel_3
@@ -31,10 +31,10 @@ components:
       name: image_1_copy_2_copy
       properties: {display_mode: fill_width, height: 126, source: _/theme/material_icons/sentiment_neutral.svg}
       type: Image
-    - layout_properties: {grid_position: 'RSXXPF,VGBYHO'}
-      name: rich_text_1
-      properties: {content: afdsafdas}
-      type: RichText
+    - layout_properties: {full_width_row: true, grid_position: 'CADZZF,RPXLXT'}
+      name: text_1_copy_2
+      properties: {align: center, text: Moderate}
+      type: form:dep_ipbks3iegq5dhg:_Components.Text
     layout_properties: {grid_position: 'MWAPPC,HHSDVY'}
     name: column_panel_4
     properties: {}
@@ -44,6 +44,10 @@ components:
       name: image_1_copy_3_copy
       properties: {display_mode: fill_width, height: 128, source: _/theme/material_icons/sentiment_content.svg}
       type: Image
+    - layout_properties: {full_width_row: true, grid_position: 'ZREYHS,PDOEZL'}
+      name: text_1_copy_3
+      properties: {align: center, text: Mild}
+      type: form:dep_ipbks3iegq5dhg:_Components.Text
     layout_properties: {grid_position: 'MWAPPC,BNTSLF'}
     name: column_panel_5
     properties: {}
@@ -53,6 +57,10 @@ components:
       name: image_1_copy_4_copy
       properties: {display_mode: fill_width, height: 132, source: _/theme/material_icons/sentiment_calm.svg}
       type: Image
+    - layout_properties: {full_width_row: true, grid_position: 'GLDUJT,HVVZUZ'}
+      name: text_1_copy_2_copy
+      properties: {align: center, text: 'Unnoticeable '}
+      type: form:dep_ipbks3iegq5dhg:_Components.Text
     layout_properties: {grid_position: 'MWAPPC,GESDOS'}
     name: column_panel_6
     properties: {}
