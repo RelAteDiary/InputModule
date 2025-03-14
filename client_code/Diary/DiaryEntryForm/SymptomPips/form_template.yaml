@@ -2,7 +2,7 @@ components: []
 container:
   properties:
     html: |
-      <center style="font-style: italic; color: #888; margin: 3em">
+      <center style="font-style: italic; color: #888; margin: 0">
         <style>
           .symptom_severity_pips_container {
             width: 100%;
