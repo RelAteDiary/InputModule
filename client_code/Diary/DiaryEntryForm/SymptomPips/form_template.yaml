@@ -23,19 +23,7 @@ container:
             <tr>
               <td>
                 <img
-                  src="_/theme/material_icons/sentiment_sad.svg"
-                  class="symptom_severity_pip_emoticon_image"
-                />
-              </td>
-              <td>
-                <img
-                  src="_/theme/material_icons/sentiment_dissatisfied.svg"
-                  class="symptom_severity_pip_emoticon_image"
-                />
-              </td>
-              <td>
-                <img
-                  src="_/theme/material_icons/sentiment_neutral.svg"
+                  src="_/theme/material_icons/sentiment_calm.svg"
                   class="symptom_severity_pip_emoticon_image"
                 />
               </td>
@@ -47,17 +35,29 @@ container:
               </td>
               <td>
                 <img
-                  src="_/theme/material_icons/sentiment_calm.svg"
+                  src="_/theme/material_icons/sentiment_neutral.svg"
+                  class="symptom_severity_pip_emoticon_image"
+                />
+              </td>
+              <td>
+                <img
+                  src="_/theme/material_icons/sentiment_dissatisfied.svg"
+                  class="symptom_severity_pip_emoticon_image"
+                />
+              </td>
+              <td>
+                <img
+                  src="_/theme/material_icons/sentiment_sad.svg"
                   class="symptom_severity_pip_emoticon_image"
                 />
               </td>
             </tr>
             <tr>
-              <td>Incapacitating</td>
-              <td>Severe</td>
-              <td>Moderate</td>
-              <td>Mild</td>
               <td>Unnoticeable</td>
+              <td>Mild</td>
+              <td>Moderate</td>
+              <td>Severe</td>
+              <td>Incapacitating</td>
             </tr>
           </tbody>
         </table>

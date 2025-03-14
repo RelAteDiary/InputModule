@@ -143,8 +143,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     card_content.add_component(Label(text='How severe was the symptom?'))
     inner_card_content = CardContentContainer()
     card_content.add_component(inner_card_content)
+    inner_card_content.role = ['anvil-role-5px-left-right-padding']
     
-    slider = Slider.Slider(start=3, min=1, max=5, step=1)
+    slider = Slider.Slider(start=3, min=1, max=5, step=1, pips=False, pips_mode='range', pips_values=[1,2,3,4,5])
     inner_card_content.add_component(slider)
     slider.add_event_handler('change', lambda **args : print (args['sender'].value))
 

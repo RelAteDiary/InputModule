@@ -1,8 +1,8 @@
 /**
  This CSS implements the Material Design 3 look and feel for Anvil apps.
  **/
-.anvil-role-20p-width {
-width: 20%;
+.anvil-role-5px-left-right-padding {
+margin: 0px;
 }
 /* Stop panel-cols cutting off drop shadows */
 .anvil-panel-col {

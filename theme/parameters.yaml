@@ -334,3 +334,4 @@ roles:
 - components: [Button]
   name: secondary-button
 - {name: 20p-width}
+- {name: 5px-left-right-padding}
