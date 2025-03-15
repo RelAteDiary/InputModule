@@ -183,9 +183,12 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
       role=["symptom-slider-spacer"],
     )
     card_content.add_component(slider)
-    slider.add_event_handler("change", lambda **args: print(args["sender"].value))
+    slider.add_event_handler("change", self.slider_move)
     # Pips float awkwardly, so add a spacer to make it easier to
     card_content.add_component(Spacer(height="40px"))
+
+  def slider_move(self, **args):
+    self.entry['symptom_severity'] = args["sender"].value
 
   def submit_entry(self, **args):
     # TODO data validation

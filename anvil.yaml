@@ -22,6 +22,9 @@ db_schema:
     - admin_ui: {order: 5, width: 200}
       name: note_color
       type: string
+    - admin_ui: {order: 6, width: 200}
+      name: symptom_severity
+      type: number
     server: full
     title: Diary
   experiments:
