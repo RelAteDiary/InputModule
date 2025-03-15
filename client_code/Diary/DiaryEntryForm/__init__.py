@@ -23,7 +23,7 @@ from anvil import (
 from ... import Constants
 from .SymptomPips import SymptomPips
 from datetime import datetime
-from anvil_extras import Slider
+from anvil_extras import Slider, Autocomplete, Chip
 import anvil.server
 
 
@@ -94,7 +94,6 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
   def update_time(self, **args):
     self.entry["time"] = args["sender"].date
-    print(f'set time to {args["sender"].date}')
 
   def add_buttons(self, container):
     flow_panel = FlowPanel(align="center")
@@ -151,10 +150,19 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     self.color_menu.icon_color = args["sender"].leading_icon_color
     self.entry["note_color"] = args["sender"].leading_icon_color
 
+  # note should work
   def add_symptom_entry(self, container):
-    container.add_component(Label(text="What did you feel?"))
-    dropdown = DropDown(items=self.app_constants.symptoms_list)
-    container.add_component(dropdown)
+    container.add_component(Label(text="What was the symptom?"))
+    symptom = Autocomplete.Autocomplete(
+        suggestions=self.app_constants.symptoms_list,
+        suggest_if_empty=True,
+        filter_mode="contains",
+      )
+    # TODO handle these events properly
+    symptom.add_event_handler('suggestion_clicked', lambda **args : print('clicked'))
+    symptom.add_event_handler('pressed_enter', lambda **args : print('pressed_enter'))
+
+    container.add_component(symptom)
     container.add_component(Label(text="How severe was the symptom?"))
 
     default_severity = 3
