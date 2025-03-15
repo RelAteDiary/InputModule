@@ -159,7 +159,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
         filter_mode="contains",
       )
     # TODO handle these events properly
-    symptom.add_event_handler('pressed_enter', lambda **args : print('pressed_enter'))
+    symptom.add_event_handler('pressed_enter', lambda **args : args['sender'].raise_event('x-popover-destroy'))
     
     container.add_component(symptom)
     container.add_component(Label(text="How severe was the symptom?"))
