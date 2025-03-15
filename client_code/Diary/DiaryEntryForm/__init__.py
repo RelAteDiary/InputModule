@@ -8,7 +8,17 @@ from m3.components import (
   TextArea,
   InteractiveCard,
 )
-from anvil import Label, DatePicker, DataGrid, ColumnPanel, FlowPanel, Image, alert, open_form
+from anvil import (
+  Label,
+  DatePicker,
+  DataGrid,
+  ColumnPanel,
+  FlowPanel,
+  Image,
+  Spacer,
+  alert,
+  open_form,
+)
 from .SymptomPips import SymptomPips
 from datetime import datetime
 from anvil_extras import Slider
@@ -34,10 +44,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
     entry_container = CardContentContainer()
     card.add_component(entry_container)
-    if type == "note":
-      self.add_notes_entry(entry_container)
-    elif type == "symptom":
+    if type == "symptom":
       self.add_symptom_entry(entry_container)
+    self.add_notes_entry(entry_container, is_optional=type != "note")
     # TODO food and symptom entry
 
     buttons_content_container = CardContentContainer()
@@ -93,14 +102,12 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     flow_panel.add_component(submit_button)
     submit_button.add_event_handler("click", self.submit_entry)
 
-  def add_notes_entry(self, container):
-    container.add_component(
-      Label(text="What do you want to make note of?", font_size=20)
-    )
+  def add_notes_entry(self, container, is_optional=True):
     # TODO come up with better phrasing here
     container.add_component(
       Label(
-        text="You can make a note of any notable event here, "
+        text=("(OPTIONAL) " if is_optional else "")
+        + "You can make a note of any thing interesting here, "
         + "though it won't be analyzed automatically."
       )
     )
@@ -140,19 +147,45 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     card_content = CardContentContainer()
     card.add_component(card_content)
 
-    card_content.add_component(Label(text='How severe was the symptom?'))
-    inner_card_content = CardContentContainer()
-    card_content.add_component(inner_card_content)
-    inner_card_content.role = ['anvil-role-5px-left-right-padding']
-    
-    slider = Slider.Slider(start=3, min=1, max=5, step=1, pips=False, pips_mode='range', pips_values=[1,2,3,4,5])
-    inner_card_content.add_component(slider)
-    slider.add_event_handler('change', lambda **args : print (args['sender'].value))
+    card_content.add_component(Label(text="How severe was the symptom?"))
 
-    card_content.add_component(SymptomPips())
-    
-    
-    # TODO finish this function
+    default_severity = 3
+    self.entry['symptom_severity'] = default_severity
+
+    def value_to_pip(value):
+      emoticons = {
+        1: "_/theme/material_icons/sentiment_calm.svg",
+        2: "_/theme/material_icons/sentiment_content.svg",
+        3: "_/theme/material_icons/sentiment_neutral.svg",
+        4: "_/theme/material_icons/sentiment_dissatisfied.svg",
+        5: "_/theme/material_icons/sentiment_sad.svg",
+      }
+      text = {
+        1: "Unnoticeable",
+        2: "Mild",
+        3: "Moderate",
+        4: "Severe",
+        5: "Incapacitating",
+      }
+      return f'<img src="{emoticons.get(value)}"><p>{text.get(value)}</p>'
+
+    slider = Slider.Slider(
+      start=3,
+      min=1,
+      max=5,
+      step=0.5,
+      pips=True,
+      pips_density=-1,
+      pips_mode="values",
+      pips_stepped=True,
+      pips_values=[1, 2, 3, 4, 5],
+      format={"to": value_to_pip, "from": lambda v: v},
+      role=["symptom-slider-spacer"],
+    )
+    card_content.add_component(slider)
+    slider.add_event_handler("change", lambda **args: print(args["sender"].value))
+    # Pips float awkwardly, so add a spacer to make it easier to
+    card_content.add_component(Spacer(height="40px"))
 
   def submit_entry(self, **args):
     # TODO data validation
