@@ -159,9 +159,8 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
         filter_mode="contains",
       )
     # TODO handle these events properly
-    symptom.add_event_handler('suggestion_clicked', lambda **args : print('clicked'))
     symptom.add_event_handler('pressed_enter', lambda **args : print('pressed_enter'))
-
+    
     container.add_component(symptom)
     container.add_component(Label(text="How severe was the symptom?"))
 
