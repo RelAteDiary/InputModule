@@ -14,11 +14,13 @@ from anvil import (
   DataGrid,
   ColumnPanel,
   FlowPanel,
+  DropDown,
   Image,
   Spacer,
   alert,
   open_form,
 )
+from ... import Constants
 from .SymptomPips import SymptomPips
 from datetime import datetime
 from anvil_extras import Slider
@@ -44,16 +46,25 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
     entry_container = CardContentContainer()
     card.add_component(entry_container)
+
+    syptom_or_diary_card = Card(appearance="filled")
+    syptom_or_diary_card_content = CardContentContainer()
+    syptom_or_diary_card.add_component(syptom_or_diary_card_content)
     if type == "symptom":
-      self.add_symptom_entry(entry_container)
+      self.add_symptom_entry(syptom_or_diary_card_content)
+      entry_container.add_component(syptom_or_diary_card)
+    elif type == 'food':
+      entry_container.add_component(syptom_or_diary_card)
+
     self.add_notes_entry(entry_container, is_optional=type != "note")
-    # TODO food and symptom entry
 
     buttons_content_container = CardContentContainer()
     card.add_component(buttons_content_container)
     self.add_buttons(buttons_content_container)
 
   def set_consts(self):
+    self.app_constants = Constants.Constants()
+    
     self.consts = {}
     self.consts["note_colors"] = {
       "default": "#000000",
@@ -141,13 +152,10 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     self.entry["note_color"] = args["sender"].leading_icon_color
 
   def add_symptom_entry(self, container):
-    card = Card(appearance="filled")
-    container.add_component(card)
-
-    card_content = CardContentContainer()
-    card.add_component(card_content)
-
-    card_content.add_component(Label(text="How severe was the symptom?"))
+    container.add_component(Label(text="What did you feel?"))
+    dropdown = DropDown(items=self.app_constants.symptoms_list)
+    container.add_component(dropdown)
+    container.add_component(Label(text="How severe was the symptom?"))
 
     default_severity = 3
     self.entry['symptom_severity'] = default_severity
@@ -182,10 +190,10 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
       format={"to": value_to_pip, "from": lambda v: v},
       role=["symptom-slider-spacer"],
     )
-    card_content.add_component(slider)
+    container.add_component(slider)
     slider.add_event_handler("change", self.slider_move)
     # Pips float awkwardly, so add a spacer to make it easier to
-    card_content.add_component(Spacer(height="40px"))
+    container.add_component(Spacer(height="40px"))
 
   def slider_move(self, **args):
     self.entry['symptom_severity'] = args["sender"].value
