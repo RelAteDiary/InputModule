@@ -27,11 +27,29 @@ def diary_get_entries(latest=None, days_prior=7, fetch_only_columns=None):
 
 
 @anvil.server.callable
-def diary_add_entry(time=None, note=None, note_color=None, symptom_severity=None, type=None):
+def diary_get_recent_symptoms():
+  me = anvil.users.get_user()
+  app_tables.diary.search(
+    tables.order_by("time"),
+    q.all_of(user=me, 
+             symptom=q.not_(None),
+             time=q.greater_than(datetime.now() - datetime.timedelta(days=7))),
+  )
+
+
+@anvil.server.callable
+def diary_add_entry(
+  time=None, note=None, note_color=None, symptom=None, symptom_severity=None, type=None
+):
   me = anvil.users.get_user()
   if note is not None:
     app_tables.diary.add_row(
-      user=me, time=time, notes=note, note_color=note_color, symptom_severity=symptom_severity,
+      user=me,
+      time=time,
+      notes=note,
+      note_color=note_color,
+      symptom=symptom,
+      symptom_severity=symptom_severity,
     )
     return True
   else:

@@ -158,8 +158,10 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
         suggest_if_empty=True,
         filter_mode="contains",
       )
-    # TODO handle these events properly
-    symptom.add_event_handler('pressed_enter', lambda **args : args['sender'].raise_event('x-popover-destroy'))
+    symptom.add_event_handler('suggestion_clicked', self.symptom_select)
+    symptom.add_event_handler('lost_focus', self.symptom_select)
+    # TODO should also dismiss the suggestion box after enter
+    symptom.add_event_handler('pressed_enter', self.symptom_select)
     
     container.add_component(symptom)
     container.add_component(Label(text="How severe was the symptom?"))
@@ -201,6 +203,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     slider.add_event_handler("change", self.slider_move)
     # Pips float awkwardly, so add a spacer to make it easier to
     container.add_component(Spacer(height="40px"))
+
+  def symptom_select(self, **args):
+    self.entry['symptom'] = args['sender'].text
 
   def slider_move(self, **args):
     self.entry['symptom_severity'] = args["sender"].value
