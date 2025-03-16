@@ -29,12 +29,14 @@ def diary_get_entries(latest=None, days_prior=7, fetch_only_columns=None):
 @anvil.server.callable
 def diary_get_recent_symptoms():
   me = anvil.users.get_user()
-  app_tables.diary.search(
+  rows = app_tables.diary.search(
+    q.fetch_only('symptom'),
     tables.order_by("time"),
     q.all_of(user=me, 
              symptom=q.not_(None),
-             time=q.greater_than(datetime.now() - datetime.timedelta(days=7))),
+             time=q.greater_than(datetime.now() - timedelta(days=7))),
   )
+  print([r for r in rows])
 
 
 @anvil.server.callable
