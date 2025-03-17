@@ -25,6 +25,9 @@ db_schema:
     - admin_ui: {order: 6, width: 200}
       name: symptom_severity
       type: number
+    - admin_ui: {order: 7, width: 200}
+      name: image
+      type: media
     server: full
     title: Diary
   experiments:

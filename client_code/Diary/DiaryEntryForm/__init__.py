@@ -15,6 +15,7 @@ from anvil import (
   ColumnPanel,
   FlowPanel,
   DropDown,
+  FileLoader,
   Image,
   Spacer,
   alert,
@@ -28,7 +29,7 @@ import anvil.server
 
 
 class DiaryEntryForm(DiaryEntryFormTemplate):
-  def __init__(self, type="symptom", **properties):
+  def __init__(self, type="note", **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.set_consts()
@@ -124,7 +125,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     )
     self.note_component = TextArea()
     container.add_component(self.note_component)
-    self.entry["note"] = ""
+    self.note_component.add_event_handler("lost_focus", self.set_note)
 
     # TODO this may be better as a flow panel instead of a dropdown
     container.add_component(
@@ -146,6 +147,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
       option.add_event_handler("click", self.select_note_color)
       color_menu_item.append(option)
     self.color_menu.menu_items = color_menu_item
+
+  def set_note(self, **args):
+    self.entry["note"] = args["sender"].text
 
   def select_note_color(self, **args):
     self.color_menu.icon_color = args["sender"].leading_icon_color
@@ -214,9 +218,27 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     # Pips float awkwardly, so add a spacer to make it easier to
     container.add_component(Spacer(height="40px"))
 
+    container.add_component(Label(text="(OPTIONAL) Add a photo."))
+
+    upload_image = FileLoader(
+      multiple=False, file_types=".png, .jpg, .jpeg", icon="fa:camera"
+    )
+    container.add_component(upload_image)
+    upload_image.add_event_handler("change", self.set_image)
+    self.image = Image(visible=False)
+    container.add_component(self.image)
+
+  def set_image(self, **args):
+    image_file = args["sender"].files[0]
+    self.entry["image"] = image_file
+    self.image.source = image_file
+    self.image.visible = True
+
   def set_symptom(self, **args):
-    if len(args["sender"].text) > 0 and self.consts["pin_icon"]:
-      self.entry["symptom"] = args['sender'].text[1:]
+    if (
+      len(args["sender"].text) > 0 and args["sender"].text[0] == self.consts["pin_icon"]
+    ):
+      self.entry["symptom"] = args["sender"].text[1:]
     else:
       self.entry["symptom"] = args["sender"].text
 
@@ -224,10 +246,15 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     self.entry["symptom_severity"] = args["sender"].value
 
   def submit_entry(self, **args):
-    # TODO data validation
-    if self.type == "note":
-      self.entry["note"] = self.note_component.text
     print(f"entry is {self.entry}")
+
+    if self.type == "symptom" and not self.entry.get("symptom"):
+      alert("Please fill in the symptom")
+      return
+    elif self.type == "note" and not self.entry.get("note"):
+      alert("Please fill in the note")
+      return
+
     if anvil.server.call("diary_add_entry", **self.entry):
       open_form(self.next_page)
     else:

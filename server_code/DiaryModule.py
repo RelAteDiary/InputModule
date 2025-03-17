@@ -51,7 +51,13 @@ def diary_get_frequent_recent_symptoms(top=5):
 
 @anvil.server.callable
 def diary_add_entry(
-  time=None, note=None, note_color=None, symptom=None, symptom_severity=None, type=None
+  time=None,
+  note=None,
+  note_color=None,
+  symptom=None,
+  symptom_severity=None,
+  type=None,
+  image=None,
 ):
   me = anvil.users.get_user()
   if note is not None:
@@ -62,6 +68,7 @@ def diary_add_entry(
       note_color=note_color,
       symptom=symptom,
       symptom_severity=symptom_severity,
+      image=image
     )
     return True
   else:
