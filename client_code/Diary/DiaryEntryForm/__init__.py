@@ -53,7 +53,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     if type == "symptom":
       self.add_symptom_entry(syptom_or_diary_card_content)
       entry_container.add_component(syptom_or_diary_card)
-    elif type == 'food':
+    elif type == "food":
       entry_container.add_component(syptom_or_diary_card)
 
     self.add_notes_entry(entry_container, is_optional=type != "note")
@@ -64,7 +64,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
   def set_consts(self):
     self.app_constants = Constants.Constants()
-    
+
     self.consts = {}
     self.consts["note_colors"] = {
       "default": "#000000",
@@ -75,6 +75,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
       "blue": "#0247FE",
       "purple": "#8601AF",
     }
+    self.consts["pin_icon"] = "📍"
 
   def add_date_entry_component(self, container):
     if self.type == "food":
@@ -153,21 +154,30 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
   # note should work
   def add_symptom_entry(self, container):
     container.add_component(Label(text="What was the symptom?"))
+
+    recent_symptoms = anvil.server.call("diary_get_frequent_recent_symptoms")
+    from_symptom_list = list(
+      filter(lambda x: x not in recent_symptoms, self.app_constants.symptoms_list)
+    )
+    suggestions = [
+      self.consts["pin_icon"] + x for x in recent_symptoms
+    ] + from_symptom_list
+
     symptom = Autocomplete.Autocomplete(
-        suggestions=self.app_constants.symptoms_list,
-        suggest_if_empty=True,
-        filter_mode="contains",
-      )
-    symptom.add_event_handler('suggestion_clicked', self.symptom_select)
-    symptom.add_event_handler('lost_focus', self.symptom_select)
+      suggestions=suggestions,
+      suggest_if_empty=True,
+      filter_mode="contains",
+    )
+    symptom.add_event_handler("suggestion_clicked", self.set_symptom)
+    symptom.add_event_handler("lost_focus", self.set_symptom)
     # TODO should also dismiss the suggestion box after enter
-    symptom.add_event_handler('pressed_enter', self.symptom_select)
-    
+    symptom.add_event_handler("pressed_enter", self.set_symptom)
+
     container.add_component(symptom)
     container.add_component(Label(text="How severe was the symptom?"))
 
     default_severity = 3
-    self.entry['symptom_severity'] = default_severity
+    self.entry["symptom_severity"] = default_severity
 
     def value_to_pip(value):
       emoticons = {
@@ -204,11 +214,14 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     # Pips float awkwardly, so add a spacer to make it easier to
     container.add_component(Spacer(height="40px"))
 
-  def symptom_select(self, **args):
-    self.entry['symptom'] = args['sender'].text
+  def set_symptom(self, **args):
+    if len(args["sender"].text) > 0 and self.consts["pin_icon"]:
+      self.entry["symptom"] = args['sender'].text[1:]
+    else:
+      self.entry["symptom"] = args["sender"].text
 
   def slider_move(self, **args):
-    self.entry['symptom_severity'] = args["sender"].value
+    self.entry["symptom_severity"] = args["sender"].value
 
   def submit_entry(self, **args):
     # TODO data validation

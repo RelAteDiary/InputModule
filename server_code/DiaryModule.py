@@ -3,6 +3,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
+from collections import Counter
 from datetime import datetime, date, timedelta
 
 
@@ -27,16 +28,25 @@ def diary_get_entries(latest=None, days_prior=7, fetch_only_columns=None):
 
 
 @anvil.server.callable
-def diary_get_recent_symptoms():
+def diary_get_frequent_recent_symptoms(top=5):
+  """
+  Find the `top` most frequent symptoms for the user in the past 7 days.
+  """
   me = anvil.users.get_user()
   rows = app_tables.diary.search(
-    q.fetch_only('symptom'),
-    tables.order_by("time"),
-    q.all_of(user=me, 
-             symptom=q.not_(None),
-             time=q.greater_than(datetime.now() - timedelta(days=7))),
+    q.fetch_only("symptom"),
+    q.all_of(
+      user=me,
+      symptom=q.not_(None),
+      time=q.greater_than(datetime.now() - timedelta(days=7)),
+    ),
   )
-  print([r for r in rows])
+
+  symptoms = [r["symptom"] for r in rows]
+  frequent_symptoms_and_count = Counter(symptoms).most_common(top)
+  frequent_symptoms = [symptom for (symptom, count) in frequent_symptoms_and_count]
+  print(frequent_symptoms)
+  return frequent_symptoms
 
 
 @anvil.server.callable
