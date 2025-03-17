@@ -23,4 +23,5 @@ class Form1(Form1Template):
 
   def outlined_button_2_click(self, **event_args):
     """This method is called when the button is clicked"""
-    anvil.server.call('diary_get_frequent_recent_symptoms')
+    response = anvil.server.call('text_to_ingredients', 'turkey burger')
+    print(response)
