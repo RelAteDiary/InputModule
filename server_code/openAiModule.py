@@ -54,4 +54,5 @@ def text_to_ingredients(food_text):
     ],
     response_format=FoodDiaryEntry,
   )
-  return response.choices[0].message.parsedt
+  print(f'response is {response}')
+  return response.choices[0].message.parsed
