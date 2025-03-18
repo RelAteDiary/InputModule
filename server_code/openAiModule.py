@@ -85,6 +85,7 @@ def text_to_ingredients(food_text):
   try:
     openai_response = call_open_ai_and_get_ingredients(food_text)
     openai_response.MealEntry
+    # TODO start here
     print(f"openai_response is {openai_response}")
     # for food_diary_entry in openai_response:
   except (ValueError, KeyError):
