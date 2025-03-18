@@ -18,11 +18,15 @@ class DishDetails(BaseModel):
     ingredient_amount: list[float]
     ingredient_unit: list[str]
 
-class FoodDiaryEntryDetails(BaseModel):
+class MealEntryDetails(BaseModel):
     dishes: list[DishDetails]
 
-class FoodDiaryEntry(BaseModel):
-  food_diary_entries: list[FoodDiaryEntryDetails]
+class MealEntry(BaseModel):
+  food_diary_entries: list[MealEntryDetails]
+  
+class DishEntry():
+  
+  
 
 FETCH_INGREDIENTS_PROMPT = '''
 You will fetch the common basic ingredients for the food given in a short string. If the dish specifies a quantity or unit of measurement, use that; otherwise use one reasonable serving as the size of the dish. Prioritize familiarity when choosing unit of measurement for an ingredient. 
@@ -43,16 +47,16 @@ def call_open_ai_and_get_ingredients(food_text):
           {"role": "system", "content": FETCH_INGREDIENTS_PROMPT},
           {"role": "user", "content": food_text},
       ],
-      response_format=FoodDiaryEntry,
+      response_format=MealEntry,
   )
-  return response
+  return response.choices[0].message.parsed
 
 @anvil.server.callable(require_user=True)
 def text_to_ingredients(food_text):
   # TODO check user is logged in
   try:
     openai_response = call_open_ai_and_get_ingredients(food_text)
-    openai_response.FoodDiaryEntry
+    openai_response.MealEntry
     print(f'openai_response is {openai_response}')
     # for food_diary_entry in openai_response:
   except (ValueError, KeyError):
