@@ -23,5 +23,6 @@ class Form1(Form1Template):
 
   def outlined_button_2_click(self, **event_args):
     """This method is called when the button is clicked"""
-    response = anvil.server.call('text_to_ingredients', 'turkey burger')
+    response = anvil.server.call('text_to_ingredients', 'chicken soup and sourdough bread with fruit bowl')
+    
     print(response)
