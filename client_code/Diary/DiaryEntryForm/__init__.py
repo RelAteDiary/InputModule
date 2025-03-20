@@ -10,6 +10,7 @@ from m3.components import (
 )
 from anvil import (
   Label,
+  HorizontalRule,
   DatePicker,
   DataGrid,
   ColumnPanel,
@@ -98,6 +99,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     self.entry["time"] = args["sender"].date
 
   def add_buttons(self, container):
+    """Add the `discard` and `submit` buttons"""
     flow_panel = FlowPanel(align="center")
     container.add_component(flow_panel)
 
@@ -244,6 +246,25 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
   def slider_move(self, **args):
     self.entry["symptom_severity"] = args["sender"].value
+
+  def add_food_entry(self, container):
+    container.add_component(Label(text="(OPTIONAL) Upload a quick picture."))
+    # TODO allow user to add photo
+
+    container.add_component(Button(text="Save and finish later"))
+    container.add_component(
+      Label(
+        text="Please return to complete the rest when you have time. I can't analyze photos yet."
+      )
+    )
+    # TODO hook up the button
+
+    container.add_component(HorizontalRule())
+
+    container.add_component(Label(text="Choose a dish from your recent meals."))
+    # TODO populate chips from recent
+
+    container.add_component(TextArea())
 
   def submit_entry(self, **args):
     print(f"entry is {self.entry}")
