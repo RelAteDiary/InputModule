@@ -1,92 +1,124 @@
 import anvil.secrets
-import anvil.google.auth, anvil.google.drive, anvil.google.mail
-from anvil.google.drive import app_files
 import anvil.users
-import anvil.tables as tables
-import anvil.tables.query as q
-from anvil.tables import app_tables
 import anvil.server
 
 from pydantic import BaseModel
 from openai import OpenAI
 
+from .Diary import DishDetails
+
 openai_client = OpenAI(api_key=anvil.secrets.get_secret("openai_api_key"))
 
 
-class DishDetails(BaseModel):
-  food: str
+class DishModel(BaseModel):
+  name: str
   ingredients: list[str]
-  ingredient_amount: list[float]
-  ingredient_unit: list[str]
+  ingredient_amounts: list[float]
+  ingredient_units: list[str]
+  ingredient_amount_in_grams: list[float]
 
 
-class MealEntryDetails(BaseModel):
-  dishes: list[DishDetails]
+class MealEntryModel(BaseModel):
+  dishes: list[DishModel]
 
 
-class MealEntry(BaseModel):
-  food_diary_entries: list[MealEntryDetails]
-
-
-class DishEntry:
-  def __init__(self, dish_name, ingredients, amounts, units, amounts_in_gram):
-    self.dish_name = dish_name
-    if (
-      len(ingredients) != len(amounts)
-      or len(ingredients) != len(units)
-      or len(ingredients) != len(amounts_in_gram)
-    ):
-      raise (
-        "ERROR the length of ingredients, amounts, units, and amount in grams should be the same!"
-      )
-    self.ingredients = [
-      self.Ingredients(
-        ingredients[i], amounts[i], amounts[i], units[i], amounts_in_gram[i]
-      )
-      for i in range(len(ingredients))
-    ]
-
-  class Ingredients:
-    def __init__(self, ingredient_name, amount, unit, amount_in_grams):
-      self.ingredient_name = ingredient_name
-      self.amount = amount
-      self.unit = unit
-      self.amount_in_grams = amount_in_grams
+class MealFormat(BaseModel):
+  food_diary_entries: list[MealEntryModel]
 
 
 FETCH_INGREDIENTS_PROMPT = """
 You will fetch the common basic ingredients for the food given in a short string. If the dish specifies a quantity or unit of measurement, use that; otherwise use one reasonable serving as the size of the dish. Prioritize familiarity when choosing unit of measurement for an ingredient. 
 Return it as JSON with the following fields: dishes.
-Where dishes is a list of DishDetails, a JSON with the following fields:
-food, ingredients, ingredient_amount, ingredient_unit.
-food is a string representing the food that the user gave you.
+Where dishes is a list of DishModel, a JSON with the following fields:
+name, ingredients, ingredient_amounts, ingredient_units,ingredient_amount_in_grams.
+name is a string representing the food that the user gave you.
 ingredients is a list of strings of the common ingredients for that food.
-ingredient_amount and ingredient_unit are two lists that represent the amount found in a typical serving size of the food as a number and the unit of measurement for that serving as a string.
-If there is no food, then return an empty list. If you are not able to fetch ingredients of a food, leave ingredients, ingredient_amount, ingredient_unit blank but fill in food.
+ingredient_amounts and ingredient_units are two lists that represent the amount found in a typical serving size of the food as a number and the unit of measurement for that serving as a string.
+ingredient_amount_in_grams is the amount in a typical serving in grams; this should match the amount specified in ingredient_amounts and ingredient_units.
+If there is no food, then return an empty list. If you are not able to fetch ingredients of a food, leave ingredients, ingredient_amounts, ingredient_units, ingredient_amount_in_grams blank but fill in name.
 """
-unit_test_food_text = "chicken soup and sourdough bread with fruit bowl"
 
 
-def call_open_ai_and_get_ingredients(food_text):
+def call_open_ai_and_get_ingredients(food_text, is_unit_test=True):
+  if is_unit_test:
+    return MealFormat(
+      food_diary_entries=[
+        MealEntryModel(
+          dishes=[
+            DishModel(
+              name="Chicken Soup",
+              ingredients=[
+                "chicken",
+                "carrots",
+                "celery",
+                "onions",
+                "garlic",
+                "chicken broth",
+                "noodles",
+              ],
+              ingredient_amounts=[1.0, 1.0, 1.0, 0.5, 1.0, 4.0, 1.0],
+              ingredient_units=["kg", "cup", "cup", "cup", "clove", "liter", "cup"],
+              ingredient_amount_in_grams=[
+                1000.0,
+                150.0,
+                150.0,
+                75.0,
+                5.0,
+                1000.0,
+                120.0,
+              ],
+            ),
+            DishModel(
+              name="Sourdough Bread",
+              ingredients=["sourdough starter", "flour", "water", "salt"],
+              ingredient_amounts=[0.1, 0.25, 0.15, 0.01],
+              ingredient_units=["kg", "kg", "liter", "g"],
+              ingredient_amount_in_grams=[100.0, 250.0, 150.0, 10.0],
+            ),
+            DishModel(
+              name="Fruit Bowl",
+              ingredients=["mixed fruits (e.g., apples, bananas, berries)"],
+              ingredient_amounts=[1.0],
+              ingredient_units=["kg"],
+              ingredient_amount_in_grams=[1000.0],
+            ),
+          ]
+        )
+      ]
+    )
   response = openai_client.beta.chat.completions.parse(
     model="gpt-4o-mini",
     messages=[
       {"role": "system", "content": FETCH_INGREDIENTS_PROMPT},
       {"role": "user", "content": food_text},
     ],
-    response_format=MealEntry,
+    response_format=MealFormat,
   )
   return response.choices[0].message.parsed
 
 
 @anvil.server.callable(require_user=True)
 def text_to_ingredients(food_text):
-  # TODO check user is logged in
+  """
+  Calls chatGPT to turn a description of a meal into a list of DishDetails
+  Example input: "chicken soup and sourdough bread with fruit bowl"
+  Uses O(750) tokens per call.
+  """
   try:
+    dish_details = []
     openai_response = call_open_ai_and_get_ingredients(food_text)
-    openai_response.MealEntry
-    # TODO start here
+    for food_diary_entry in openai_response.food_diary_entries:
+      for dish in food_diary_entry.dishes:
+        dish_details.append(
+          DishDetails.DishDetails(
+            dish.name,
+            dish.ingredients,
+            dish.ingredient_amounts,
+            dish.ingredient_units,
+            dish.ingredient_amount_in_grams,
+          )
+        )
     print(f"openai_response is {openai_response}")
-    # for food_diary_entry in openai_response:
+    return dish_details
   except (ValueError, KeyError):
     print("Automatically generating ingredients is not possible right now. Sorry!")
