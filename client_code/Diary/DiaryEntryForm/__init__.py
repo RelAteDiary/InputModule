@@ -276,10 +276,13 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
         + 'E.g. "chicken soup and sourdough bread with fruit bowl"'
       )
     )
-    fp = FlowPanel()
-    container.add_component(fp)
-    fp.add_component(TextArea(auto_expand=True))
-    fp.add_component(Button(text='Guess ingredients',align='right'))
+    # TODO makes this a custom component
+    # fp = FlowPanel()
+    # container.add_component(fp)
+    container.add_component(TextArea(auto_expand=True))
+    container.add_component(Button(text='Get common ingredients for dish',align='right'))
+
+    container.add_component(Label(text='The ingredients are:'))
 
   def submit_entry(self, **args):
     print(f"entry is {self.entry}")
