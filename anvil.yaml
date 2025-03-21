@@ -170,6 +170,6 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/anvil/secrets.yml
-startup: {module: Form1, type: form}
+startup: {module: Diary.DiaryEntryForm, type: form}
 startup_form: null
 uplink_visible: true
