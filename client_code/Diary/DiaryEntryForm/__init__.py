@@ -7,10 +7,10 @@ from m3.components import (
   MenuItem,
   TextArea,
   InteractiveCard,
+  Divider,
 )
 from anvil import (
   Label,
-  HorizontalRule,
   DatePicker,
   DataGrid,
   ColumnPanel,
@@ -30,7 +30,7 @@ import anvil.server
 
 
 class DiaryEntryForm(DiaryEntryFormTemplate):
-  def __init__(self, type="note", **properties):
+  def __init__(self, type="food", **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.set_consts()
@@ -56,6 +56,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
       self.add_symptom_entry(syptom_or_diary_card_content)
       entry_container.add_component(syptom_or_diary_card)
     elif type == "food":
+      self.add_food_entry(syptom_or_diary_card_content)
       entry_container.add_component(syptom_or_diary_card)
 
     self.add_notes_entry(entry_container, is_optional=type != "note")
@@ -220,6 +221,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     # Pips float awkwardly, so add a spacer to make it easier to
     container.add_component(Spacer(height="40px"))
 
+    self.upload_image(container)
+
+  def upload_image(self,container):
     container.add_component(Label(text="(OPTIONAL) Add a photo."))
 
     upload_image = FileLoader(
@@ -248,10 +252,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     self.entry["symptom_severity"] = args["sender"].value
 
   def add_food_entry(self, container):
-    container.add_component(Label(text="(OPTIONAL) Upload a quick picture."))
-    # TODO allow user to add photo
-
-    container.add_component(Button(text="Save and finish later"))
+    self.upload_image(container)
+    container.add_component(Button(text="Save and finish later", align='center'))
+    # TODO hook up this button
     container.add_component(
       Label(
         text="Please return to complete the rest when you have time. I can't analyze photos yet."
@@ -259,11 +262,12 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     )
     # TODO hook up the button
 
-    container.add_component(HorizontalRule())
+    container.add_component(Divider(type='inset'))
 
     container.add_component(Label(text="Choose a dish from your recent meals."))
     # TODO populate chips from recent
-
+    container.add_component(Chip.Chip(chips=('banana smoothie')))
+    container.add_component(Label(text="Choose a dish from your recent meals."))
     container.add_component(TextArea())
 
   def submit_entry(self, **args):
