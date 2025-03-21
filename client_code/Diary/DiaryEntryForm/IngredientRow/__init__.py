@@ -4,7 +4,7 @@ from ._anvil_designer import IngredientRowTemplate
 class IngredientRow(IngredientRowTemplate):
   def __init__(
     self,
-    voilates_diets=[],
+    voilates_diets=['test_diet'],
     amount_and_unit="1 serving",
     ingredient="food",
     **properties,
