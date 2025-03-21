@@ -14,44 +14,9 @@ container:
             padding-right: 0px;
             padding-top: 0px;
           }
-          .symptom_severity_pip_emoticon_image {
-            width: 100%;
-          }
         </style>
         <table class="meal_ingredient_row_table">
           <tbody>
-            <tr>
-              <td>
-                <img
-                  src="_/theme/material_icons/sentiment_calm.svg"
-                  class="symptom_severity_pip_emoticon_image"
-                />
-              </td>
-              <td>
-                <img
-                  src="_/theme/material_icons/sentiment_content.svg"
-                  class="symptom_severity_pip_emoticon_image"
-                />
-              </td>
-              <td>
-                <img
-                  src="_/theme/material_icons/sentiment_neutral.svg"
-                  class="symptom_severity_pip_emoticon_image"
-                />
-              </td>
-              <td>
-                <img
-                  src="_/theme/material_icons/sentiment_dissatisfied.svg"
-                  class="symptom_severity_pip_emoticon_image"
-                />
-              </td>
-              <td>
-                <img
-                  src="_/theme/material_icons/sentiment_sad.svg"
-                  class="symptom_severity_pip_emoticon_image"
-                />
-              </td>
-            </tr>
             <tr>
               <td>Unnoticeable</td>
               <td>Mild</td>
