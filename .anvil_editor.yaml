@@ -1,11 +1,13 @@
 unique_ids:
   assets:
     material_icons/.gitkeep: '1741750406113391956956597.27295'
+    material_icons/red_warning.svg: '1742584635608300985156866.88196'
     material_icons/sentiment_calm.svg: '1741750828129732818034933.3823'
     material_icons/sentiment_content.svg: '1741750821677404463165603.6548'
     material_icons/sentiment_dissatisfied.svg: '1741750531244741457018257.6752'
     material_icons/sentiment_neutral.svg: '1741750442820731921722838.2284'
     material_icons/sentiment_sad.svg: '1741750511883525605034803.45447'
+    material_icons/warning.svg: '1742584573202993867561422.898'
     standard-page.html: R34E5MEGLPJYTV72CUG5W2SZVXTO3N7X
     theme.css: MH6BQA5MH7MBOB65BAJMEFEZGOJTEV6V
   forms:

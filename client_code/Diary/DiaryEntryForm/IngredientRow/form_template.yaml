@@ -9,20 +9,18 @@ container:
             table-layout: fixed;
             text-align: center;
           }
-          .meal_ingredient_row_table td {
-            padding-left: 0px;
-            padding-right: 0px;
-            padding-top: 0px;
-          }
+
         </style>
         <table class="meal_ingredient_row_table">
           <tbody>
             <tr>
-              <td>Unnoticeable</td>
-              <td>Mild</td>
-              <td>Moderate</td>
-              <td>Severe</td>
-              <td>Incapacitating</td>
+              <td anvil-name="warning" style="width: 15%">
+                <img src="_/theme/material_icons/red_warning.svg" />
+              </td>
+              <td anvil-name="quantity">2 slices</td>
+              <td anvil-name="food">bread</td>
+              <td anvil-name="edit" style="color: orange; width: 15%">edit</td>
+              <td anvil-name="delete" style="color: red; width: 15%">delete</td>
             </tr>
           </tbody>
         </table>

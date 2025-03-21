@@ -1,17 +1,17 @@
 from ._anvil_designer import IngredientRowTemplate
-from anvil import *
-import anvil.server
-import anvil.google.auth, anvil.google.drive
-from anvil.google.drive import app_files
-import anvil.users
-import anvil.tables as tables
-import anvil.tables.query as q
-from anvil.tables import app_tables
 
 
 class IngredientRow(IngredientRowTemplate):
-  def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
+  def __init__(
+    self,
+    voilates_diets=[],
+    amount_and_unit="1 serving",
+    ingredient="food",
+    **properties,
+  ):
     self.init_components(**properties)
-
+    if len(voilates_diets) == 0:
+      self.dom_nodes["warning"].style.visibility = "hidden"
+    self.dom_nodes['quantity'].innerText = amount_and_unit
+    self.dom_nodes['food'].innerText=ingredient
     # Any code you write here will run before the form opens.
