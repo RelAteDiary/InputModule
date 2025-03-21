@@ -223,7 +223,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
     self.upload_image(container)
 
-  def upload_image(self,container):
+  def upload_image(self, container):
     container.add_component(Label(text="(OPTIONAL) Add a photo."))
 
     upload_image = FileLoader(
@@ -253,22 +253,33 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
   def add_food_entry(self, container):
     self.upload_image(container)
-    container.add_component(Button(text="Save and finish later", align='center'))
-    # TODO hook up this button
     container.add_component(
-      Label(
-        text="Please return to complete the rest when you have time. I can't analyze photos yet."
-      )
+      Button(text="Save and finish later", align="center", appearance='outlined')
     )
-    # TODO hook up the button
+    # TODO hook up this button
 
-    container.add_component(Divider(type='inset'))
+    container.add_component(Divider(type="inset"))
 
     container.add_component(Label(text="Choose a dish from your recent meals."))
     # TODO populate chips from recent
-    container.add_component(Chip.Chip(chips=('banana smoothie')))
-    container.add_component(Label(text="Choose a dish from your recent meals."))
-    container.add_component(TextArea())
+    recent_meals = FlowPanel(align="left")
+    container.add_component(recent_meals)
+    recent_meals.add_component(Chip.Chip(text="banana smoothie", close_icon=False))
+    recent_meals.add_component(Chip.Chip(text="mango", close_icon=False))
+    recent_meals.add_component(Chip.Chip(text="turkey burger", close_icon=False))
+
+    container.add_component(Divider(type="inset"))
+
+    container.add_component(
+      Label(
+        text="Give a short description of what you ate. "
+        + 'E.g. "chicken soup and sourdough bread with fruit bowl"'
+      )
+    )
+    fp = FlowPanel()
+    container.add_component(fp)
+    fp.add_component(TextArea(auto_expand=True))
+    fp.add_component(Button(text='Guess ingredients',align='right'))
 
   def submit_entry(self, **args):
     print(f"entry is {self.entry}")
