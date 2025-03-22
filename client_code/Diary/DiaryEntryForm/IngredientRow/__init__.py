@@ -11,7 +11,8 @@ class IngredientRow(IngredientRowTemplate):
   ):
     self.init_components(**properties)
     if len(voilates_diets) == 0:
-      self.dom_nodes["warning"].style.visibility = "hidden"
-    self.dom_nodes['quantity'].innerText = amount_and_unit
-    self.dom_nodes['food'].innerText=ingredient
+      self.dom_nodes["warning-column"].style.visibility = "hidden"
+      self.dom_nodes['warning-column']
+    self.dom_nodes['quantity-column'].innerText = amount_and_unit
+    self.dom_nodes['food-column'].innerText=ingredient
     # Any code you write here will run before the form opens.

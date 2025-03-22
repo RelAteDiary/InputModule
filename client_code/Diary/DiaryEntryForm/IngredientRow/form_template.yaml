@@ -9,7 +9,12 @@ container:
             table-layout: fixed;
             text-align: center;
           }
-
+          .warning-button {
+            border-radius: 5000px;
+            border: 0px;
+            background: rgba(255, 255, 255, 0.5);
+            color: red;
+          }
         </style>
         <table class="meal_ingredient_row_table">
           <tbody>
@@ -17,14 +22,15 @@ container:
               <!-- <td anvil-name="warning" style="width: 15%">
                 <img src="_/theme/material_icons/red_warning.svg" />
               </td> -->
-              <td><button class="custom-button" anvil-name="custom-button">
-        <i class="material-symbols-outlined">warning</i>
-        <span anvil-name="custom-button-text"></span>
-      </button></td>
-              <td anvil-name="quantity">2 slices</td>
-              <td anvil-name="food">bread</td>
-              <td anvil-name="edit" style="color: orange; width: 15%">edit</td>
-              <td anvil-name="delete" style="color: red; width: 15%">delete</td>
+              <td anvil-name="warning-column" style="width: 10%">
+                <button class="warning-button" anvil-name="warning-button">
+                  <i class="material-symbols-outlined">warning</i>
+                </button>
+              </td>
+              <td anvil-name="quantity-column">2 slices</td>
+              <td anvil-name="food-column">bread</td>
+              <td anvil-name="edit-column" style="color: orange; width: 15%">edit</td>
+              <td anvil-name="delete-column" style="color: red; width: 15%">delete</td>
             </tr>
           </tbody>
         </table>
