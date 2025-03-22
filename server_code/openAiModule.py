@@ -109,15 +109,14 @@ def text_to_ingredients(food_text):
     openai_response = call_open_ai_and_get_ingredients(food_text)
     for food_diary_entry in openai_response.food_diary_entries:
       for dish in food_diary_entry.dishes:
-        dish_details.append(
-          DishDetails.DishDetails(
-            dish.name,
-            dish.ingredients,
-            dish.ingredient_amounts,
-            dish.ingredient_units,
-            dish.ingredient_amount_in_grams,
-          )
+        dish_details = DishDetails(dish.name)
+        dish_details.set_ingredients_from_lists(
+          dish.ingredients,
+          dish.ingredient_amounts,
+          dish.ingredient_units,
+          dish.ingredient_amount_in_grams,
         )
+        dish_details.append(dish_details)
     print(f"openai_response is {openai_response}")
     return dish_details
   except (ValueError, KeyError):

@@ -1,4 +1,9 @@
 from ._anvil_designer import DiaryEntryFormTemplate
+
+
+from datetime import datetime
+from anvil_extras import Slider, Autocomplete, Chip
+import anvil.server
 from m3.components import (
   Card,
   CardContentContainer,
@@ -6,6 +11,7 @@ from m3.components import (
   ButtonMenu,
   MenuItem,
   TextArea,
+  TextBox,
   InteractiveCard,
   Divider,
 )
@@ -22,12 +28,14 @@ from anvil import (
   alert,
   open_form,
 )
+
 from ... import Constants
-from .SymptomPips import SymptomPips
+from ..DishDetails import DishDetails
+from ..IngredientDetails import IngredientDetails
+
+
+from .IngredientRow import IngredientRow
 from .OrDivider import OrDivider
-from datetime import datetime
-from anvil_extras import Slider, Autocomplete, Chip
-import anvil.server
 
 
 class DiaryEntryForm(DiaryEntryFormTemplate):
@@ -252,11 +260,11 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     self.entry["symptom_severity"] = args["sender"].value
 
   def add_food_entry(self, container):
-    entry_card = Card(appearance='filled')
+    entry_card = Card()
     container.add_component(entry_card)
     entry_card_container = CardContentContainer()
     entry_card.add_component(entry_card_container)
-    
+
     entry_card_container.add_component(
       Label(
         text="What did you eat? "
@@ -264,11 +272,15 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
       )
     )
     entry_card_container.add_component(TextArea(auto_expand=True))
-    entry_card_container.add_component(Button(text='Draft my food diary entry for me',align='center'))
+    entry_card_container.add_component(
+      Button(text="Draft my food diary entry for me", align="center")
+    )
 
     entry_card_container.add_component(OrDivider())
-    
-    entry_card_container.add_component(Label(text="Choose a dish from your recent meals."))
+
+    entry_card_container.add_component(
+      Label(text="Choose dishes from your recent meals.")
+    )
     # TODO populate chips from recent
     recent_meals = FlowPanel(align="left")
     entry_card_container.add_component(recent_meals)
@@ -278,25 +290,46 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
     entry_card_container.add_component(OrDivider())
 
-    entry_card_container.add_component(Button(text='+ Add dishes and ingredients manually',align='center', appearance="outlined"))
-    
+    entry_card_container.add_component(
+      Button(
+        text="+ Add dishes and ingredients manually",
+        align="center",
+        appearance="outlined",
+      )
+    )
 
-    
+    example_dish = DishDetails("apple pie")
+    example_dish.set_ingredients(
+      [
+        IngredientDetails("apple", "1", "", 100, ["fodmap"]),
+        IngredientDetails("sugar", "100", "g", 100, []),
+      ]
+    )
+    self.make_dish_card(container, example_dish)
+
     # container.add_component(Divider())
     self.upload_image(container)
     container.add_component(
-      Button(text="Save and finish later", align="center", appearance='outlined')
+      Button(text="Save and finish later", align="center", appearance="outlined")
     )
 
+  def make_dish_card(self, container, dish_details):
+    dish_card = Card()
+    container.add_component(dish_card)
+    dish_card_container = CardContentContainer()
+    dish_card.add_component(dish_card_container)
 
+    dish_card_container.add_component(Label(text="I ate this food:"))
+    dish_card_container.add_component(TextBox(text=dish_details.dish_name))
 
-    
-    # TODO makes this a custom component
-    # fp = FlowPanel()
-    # container.add_component(fp)
-
-
-      
+    for ingredient in dish_details.ingredients:
+      ingredient_row = IngredientRow(
+        ingredient=ingredient.ingredient_name,
+        voilates_diets=ingredient.violates_diets,
+        amount_and_unit=ingredient.amount + " " + ingredient.unit,
+      )
+      dish_card_container.add_component(ingredient_row)
+    dish_card_container.add_component(Button(align='center',text='+ Add ingredient', appearance='text'))
 
   def submit_entry(self, **args):
     print(f"entry is {self.entry}")

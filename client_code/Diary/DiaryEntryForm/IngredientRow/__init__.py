@@ -11,6 +11,7 @@ class IngredientRow(IngredientRowTemplate):
     ingredient="food",
     **properties,
   ):
+    print(f'ingredient is {ingredient}')
     self.init_components(**properties)
     
     self.ingredient=ingredient
