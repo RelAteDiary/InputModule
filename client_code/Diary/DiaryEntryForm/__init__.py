@@ -24,6 +24,7 @@ from anvil import (
 )
 from ... import Constants
 from .SymptomPips import SymptomPips
+from .OrDivider import OrDivider
 from datetime import datetime
 from anvil_extras import Slider, Autocomplete, Chip
 import anvil.server
@@ -56,8 +57,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
       self.add_symptom_entry(syptom_or_diary_card_content)
       entry_container.add_component(syptom_or_diary_card)
     elif type == "food":
-      self.add_food_entry(syptom_or_diary_card_content)
-      entry_container.add_component(syptom_or_diary_card)
+      self.add_food_entry(entry_container)
 
     self.add_notes_entry(entry_container, is_optional=type != "note")
 
@@ -252,29 +252,37 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     self.entry["symptom_severity"] = args["sender"].value
 
   def add_food_entry(self, container):
-    container.add_component(
+    entry_card = Card(appearance='filled')
+    container.add_component(entry_card)
+    entry_card_container = CardContentContainer()
+    entry_card.add_component(entry_card_container)
+    
+    entry_card_container.add_component(
       Label(
         text="What did you eat? "
         + 'E.g. "chicken soup and sourdough bread with fruit bowl"'
       )
     )
-    container.add_component(TextArea(auto_expand=True))
-    container.add_component(Button(text='Generate ingredients',align='left'))
+    entry_card_container.add_component(TextArea(auto_expand=True))
+    entry_card_container.add_component(Button(text='Draft my food diary entry for me',align='center'))
 
-    container.add_component(Button(text='+',align='center', appearance="outlined"))
-
+    entry_card_container.add_component(OrDivider())
     
-    container.add_component(Divider(type="inset"))
-    container.add_component(Label(text="Choose a dish from your recent meals."))
+    entry_card_container.add_component(Label(text="Choose a dish from your recent meals."))
     # TODO populate chips from recent
     recent_meals = FlowPanel(align="left")
-    container.add_component(recent_meals)
+    entry_card_container.add_component(recent_meals)
     recent_meals.add_component(Chip.Chip(text="banana smoothie", close_icon=False))
     recent_meals.add_component(Chip.Chip(text="mango", close_icon=False))
     recent_meals.add_component(Chip.Chip(text="turkey burger", close_icon=False))
 
+    entry_card_container.add_component(OrDivider())
+
+    entry_card_container.add_component(Button(text='+ Add dishes and ingredients manually',align='center', appearance="outlined"))
     
-    container.add_component(Divider())
+
+    
+    # container.add_component(Divider())
     self.upload_image(container)
     container.add_component(
       Button(text="Save and finish later", align="center", appearance='outlined')

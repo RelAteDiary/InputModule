@@ -1,0 +1,26 @@
+components: []
+container:
+  properties:
+    html: |
+      <center style="font-style: italic; color: #888; margin: 0">
+        <style>
+          .divider {
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+          }
+
+          .divider::before,
+          .divider::after {
+            flex: 1;
+            content: "";
+            padding: 0.5px;
+            background-color: grey;
+          }
+        </style>
+        <br>
+        <div class="divider">OR</div>
+        <br>
+      </center>
+  type: HtmlTemplate
+is_package: true
