@@ -1,5 +1,5 @@
 from ._anvil_designer import IngredientRowTemplate
-
+from anvil import alert
 
 class IngredientRow(IngredientRowTemplate):
   def __init__(
@@ -12,7 +12,8 @@ class IngredientRow(IngredientRowTemplate):
     self.init_components(**properties)
     if len(voilates_diets) == 0:
       self.dom_nodes["warning-column"].style.visibility = "hidden"
-      self.dom_nodes['warning-column']
+    else:
+      self.dom_nodes['warning-button'].addEventListener('click', lambda **args : print('clicked'))
     self.dom_nodes['quantity-column'].innerText = amount_and_unit
     self.dom_nodes['food-column'].innerText=ingredient
     # Any code you write here will run before the form opens.
