@@ -14,9 +14,13 @@ container:
         <table class="meal_ingredient_row_table">
           <tbody>
             <tr>
-              <td anvil-name="warning" style="width: 15%">
+              <!-- <td anvil-name="warning" style="width: 15%">
                 <img src="_/theme/material_icons/red_warning.svg" />
-              </td>
+              </td> -->
+              <td><button class="custom-button" anvil-name="custom-button">
+        <i class="material-symbols-outlined">warning</i>
+        <span anvil-name="custom-button-text"></span>
+      </button></td>
               <td anvil-name="quantity">2 slices</td>
               <td anvil-name="food">bread</td>
               <td anvil-name="edit" style="color: orange; width: 15%">edit</td>
