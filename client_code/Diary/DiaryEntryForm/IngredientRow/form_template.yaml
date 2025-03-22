@@ -29,8 +29,8 @@ container:
               </td>
               <td anvil-name="quantity-column">2 slices</td>
               <td anvil-name="food-column">bread</td>
-              <td anvil-name="edit-column" style="color: orange; width: 15%">edit</td>
-              <td anvil-name="delete-column" style="color: red; width: 15%">delete</td>
+              <td anvil-name="edit-column" style="width: 15%"><a style="color: orange">edit</a></td>
+              <td anvil-name="delete-column" style="width: 15%"><a style="color: red;">delete</a></td>
             </tr>
           </tbody>
         </table>

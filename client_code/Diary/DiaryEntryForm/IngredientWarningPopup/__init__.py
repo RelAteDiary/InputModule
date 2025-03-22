@@ -12,7 +12,7 @@ class IngredientWarningPopup(IngredientWarningPopupTemplate):
     self.init_components(**properties)
     self.add_component(
       Label(
-        text=f'The ingredient "{ingredient_name}" may conflict with the following diets you\'re keeping.'
+        text=f'The ingredient "{ingredient_name}" may conflict with the following diets you\'re keeping:'
       )
     )
     diets_panel = FlowPanel(align="center")

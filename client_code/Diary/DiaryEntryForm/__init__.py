@@ -252,14 +252,19 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     self.entry["symptom_severity"] = args["sender"].value
 
   def add_food_entry(self, container):
-    self.upload_image(container)
     container.add_component(
-      Button(text="Save and finish later", align="center", appearance='outlined')
+      Label(
+        text="What did you eat? "
+        + 'E.g. "chicken soup and sourdough bread with fruit bowl"'
+      )
     )
-    # TODO hook up this button
+    container.add_component(TextArea(auto_expand=True))
+    container.add_component(Button(text='Generate ingredients',align='left'))
 
+    container.add_component(Button(text='+',align='center', appearance="outlined"))
+
+    
     container.add_component(Divider(type="inset"))
-
     container.add_component(Label(text="Choose a dish from your recent meals."))
     # TODO populate chips from recent
     recent_meals = FlowPanel(align="left")
@@ -268,21 +273,22 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     recent_meals.add_component(Chip.Chip(text="mango", close_icon=False))
     recent_meals.add_component(Chip.Chip(text="turkey burger", close_icon=False))
 
-    container.add_component(Divider(type="inset"))
-
+    
+    container.add_component(Divider())
+    self.upload_image(container)
     container.add_component(
-      Label(
-        text="Give a short description of what you ate. "
-        + 'E.g. "chicken soup and sourdough bread with fruit bowl"'
-      )
+      Button(text="Save and finish later", align="center", appearance='outlined')
     )
+
+
+
+    
     # TODO makes this a custom component
     # fp = FlowPanel()
     # container.add_component(fp)
-    container.add_component(TextArea(auto_expand=True))
-    container.add_component(Button(text='Get common ingredients for dish',align='right'))
 
-    container.add_component(Label(text='The ingredients are:'))
+
+      
 
   def submit_entry(self, **args):
     print(f"entry is {self.entry}")
