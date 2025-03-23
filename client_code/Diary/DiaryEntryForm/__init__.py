@@ -73,6 +73,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     card.add_component(buttons_content_container)
     self.add_buttons(buttons_content_container)
 
+  #############################################################
+  # Common components and helper functions
+
   def set_consts(self):
     self.app_constants = Constants.Constants()
 
@@ -125,6 +128,43 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     flow_panel.add_component(submit_button)
     submit_button.add_event_handler("click", self.submit_entry)
 
+  def upload_image(self, container):
+    container.add_component(Label(text="(OPTIONAL) Add a photo."))
+
+    upload_image = FileLoader(
+      multiple=False, file_types=".png, .jpg, .jpeg", icon="fa:camera"
+    )
+    container.add_component(upload_image)
+    upload_image.add_event_handler("change", self.set_image)
+    self.image = Image(visible=False)
+    container.add_component(self.image)
+
+  def set_image(self, **args):
+    image_file = args["sender"].files[0]
+    self.entry["image"] = image_file
+    self.image.source = image_file
+    self.image.visible = True
+
+  def submit_entry(self, **args):
+    print(f"entry is {self.entry}")
+
+    if self.type == "symptom" and not self.entry.get("symptom"):
+      alert("Please fill in the symptom")
+      return
+    elif self.type == "note" and not self.entry.get("note"):
+      alert("Please fill in the note")
+      return
+
+    if anvil.server.call("diary_add_entry", **self.entry):
+      open_form(self.next_page)
+    else:
+      alert("Something went wrong with submitting your entry, please try again later.")
+
+    # Any code you write here will run before the form opens.
+
+  #############################################################
+  # Note entry components (also used in other entries)
+
   def add_notes_entry(self, container, is_optional=True):
     # TODO come up with better phrasing here
     container.add_component(
@@ -165,8 +205,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
   def select_note_color(self, **args):
     self.color_menu.icon_color = args["sender"].leading_icon_color
     self.entry["note_color"] = args["sender"].leading_icon_color
-
-  # note should work
+  
+  #############################################################
+  # Symptom entry components
   def add_symptom_entry(self, container):
     container.add_component(Label(text="What was the symptom?"))
 
@@ -231,23 +272,6 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
     self.upload_image(container)
 
-  def upload_image(self, container):
-    container.add_component(Label(text="(OPTIONAL) Add a photo."))
-
-    upload_image = FileLoader(
-      multiple=False, file_types=".png, .jpg, .jpeg", icon="fa:camera"
-    )
-    container.add_component(upload_image)
-    upload_image.add_event_handler("change", self.set_image)
-    self.image = Image(visible=False)
-    container.add_component(self.image)
-
-  def set_image(self, **args):
-    image_file = args["sender"].files[0]
-    self.entry["image"] = image_file
-    self.image.source = image_file
-    self.image.visible = True
-
   def set_symptom(self, **args):
     if (
       len(args["sender"].text) > 0 and args["sender"].text[0] == self.consts["pin_icon"]
@@ -258,6 +282,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
   def slider_move(self, **args):
     self.entry["symptom_severity"] = args["sender"].value
+
+  #############################################################
+  # Symptom entry components
 
   def add_food_entry(self, container):
     entry_card = Card()
@@ -330,20 +357,3 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
       )
       dish_card_container.add_component(ingredient_row)
     dish_card_container.add_component(Button(align='center',text='+ Add ingredient', appearance='text'))
-
-  def submit_entry(self, **args):
-    print(f"entry is {self.entry}")
-
-    if self.type == "symptom" and not self.entry.get("symptom"):
-      alert("Please fill in the symptom")
-      return
-    elif self.type == "note" and not self.entry.get("note"):
-      alert("Please fill in the note")
-      return
-
-    if anvil.server.call("diary_add_entry", **self.entry):
-      open_form(self.next_page)
-    else:
-      alert("Something went wrong with submitting your entry, please try again later.")
-
-    # Any code you write here will run before the form opens.
