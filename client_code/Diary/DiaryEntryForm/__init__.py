@@ -37,17 +37,26 @@ from ..IngredientDetails import IngredientDetails
 from .IngredientRow import IngredientRow
 from .OrDivider import OrDivider
 
-
+# A form for entering diary entries.
+# Here are the entries that should be populated for each type:
+#   all  - time : datetime,
+#          [optional] image : media
+#   note - note : str,
+#          note_color : str
+#   food - dishes : list of DishDetails,
+#          [optional] meal_freeform_text : str, 
+#          [opitonal] note : str,
+#          [optional] note_color : str
+#   symptom - symptom : str,
+#          symptom_severity : float[0,5], 
+#          [opitonal] note : str,
+#          [optional] note_color : str
 class DiaryEntryForm(DiaryEntryFormTemplate):
-  def __init__(self, type="food", **properties):
+  def __init__(self, type="symptom", **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.type = type
     self.set_consts()
-    # Here are the entries that should be populated for each type:
-    #   all  - time, [optional]image
-    #   note - note, note_color
-    #   food - meal_freeform_text, 
     self.entry = {}
 
     entry_content_container = CardContentContainer()
@@ -56,11 +65,11 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     self.add_date_entry_component(entry_content_container)
 
     if type == "symptom":
-      self.add_symptom_entry(entry_content_container)
+      self.add_symptom_entry_fields(entry_content_container)
     elif type == "food":
-      self.add_food_entry(entry_content_container)
+      self.add_food_entry_fields(entry_content_container)
 
-    self.add_notes_entry(entry_content_container, is_optional=type != "note")
+    self.add_notes_entry_fields(entry_content_container, is_optional=type != "note")
 
     self.add_buttons(entry_content_container)
 
@@ -155,7 +164,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
   #############################################################
   # Note entry components (also used in other entry types)
 
-  def add_notes_entry(self, container, is_optional=True):
+  def add_notes_entry_fields(self, container, is_optional=True):
     # TODO come up with better phrasing here
     container.add_component(
       Label(
@@ -198,7 +207,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
   
   #############################################################
   # Symptom entry components
-  def add_symptom_entry(self, container):
+  def add_symptom_entry_fields(self, container):
     syptom_card = Card(appearance="filled")
     container.add_component(syptom_card)
     syptom_content = CardContentContainer()
@@ -279,9 +288,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     self.entry["symptom_severity"] = args["sender"].value
 
   #############################################################
-  # Symptom entry components
+  # Food entry components
 
-  def add_food_entry(self, container):
+  def add_food_entry_fields(self, container):
     entry_card = Card()
     container.add_component(entry_card)
     entry_card_container = CardContentContainer()
