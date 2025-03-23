@@ -42,36 +42,27 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
   def __init__(self, type="food", **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.set_consts()
-
     self.type = type
+    self.set_consts()
+    # Here are the entries that should be populated for each type:
+    #   all  - time, [optional]image
+    #   note - note, note_color
+    #   food - meal_freeform_text, 
     self.entry = {}
-    self.next_page = "HomePage"
 
-    card = Card(appearance="outlined")
-    self.add_component(card)
+    entry_content_container = CardContentContainer()
+    self.add_component(entry_content_container)
+    
+    self.add_date_entry_component(entry_content_container)
 
-    date_entry_content_container = CardContentContainer()
-    card.add_component(date_entry_content_container)
-    self.add_date_entry_component(date_entry_content_container)
-
-    entry_container = CardContentContainer()
-    card.add_component(entry_container)
-
-    syptom_or_diary_card = Card(appearance="filled")
-    syptom_or_diary_card_content = CardContentContainer()
-    syptom_or_diary_card.add_component(syptom_or_diary_card_content)
     if type == "symptom":
-      self.add_symptom_entry(syptom_or_diary_card_content)
-      entry_container.add_component(syptom_or_diary_card)
+      self.add_symptom_entry(entry_content_container)
     elif type == "food":
-      self.add_food_entry(entry_container)
+      self.add_food_entry(entry_content_container)
 
-    self.add_notes_entry(entry_container, is_optional=type != "note")
+    self.add_notes_entry(entry_content_container, is_optional=type != "note")
 
-    buttons_content_container = CardContentContainer()
-    card.add_component(buttons_content_container)
-    self.add_buttons(buttons_content_container)
+    self.add_buttons(entry_content_container)
 
   #############################################################
   # Common components and helper functions
@@ -90,6 +81,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
       "purple": "#8601AF",
     }
     self.consts["pin_icon"] = "📍"
+    self.next_page = "HomePage"
 
   def add_date_entry_component(self, container):
     if self.type == "food":
@@ -110,6 +102,23 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
   def update_time(self, **args):
     self.entry["time"] = args["sender"].date
 
+  def upload_image(self, container):
+    container.add_component(Label(text="(OPTIONAL) Add a photo."))
+
+    upload_image = FileLoader(
+      multiple=False, file_types=".png, .jpg, .jpeg", icon="fa:camera"
+    )
+    container.add_component(upload_image)
+    upload_image.add_event_handler("change", self.set_image)
+    self.image = Image(visible=False)
+    container.add_component(self.image)
+
+  def set_image(self, **args):
+    image_file = args["sender"].files[0]
+    self.entry["image"] = image_file
+    self.image.source = image_file
+    self.image.visible = True
+
   def add_buttons(self, container):
     """Add the `discard` and `submit` buttons"""
     flow_panel = FlowPanel(align="center")
@@ -128,23 +137,6 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     flow_panel.add_component(submit_button)
     submit_button.add_event_handler("click", self.submit_entry)
 
-  def upload_image(self, container):
-    container.add_component(Label(text="(OPTIONAL) Add a photo."))
-
-    upload_image = FileLoader(
-      multiple=False, file_types=".png, .jpg, .jpeg", icon="fa:camera"
-    )
-    container.add_component(upload_image)
-    upload_image.add_event_handler("change", self.set_image)
-    self.image = Image(visible=False)
-    container.add_component(self.image)
-
-  def set_image(self, **args):
-    image_file = args["sender"].files[0]
-    self.entry["image"] = image_file
-    self.image.source = image_file
-    self.image.visible = True
-
   def submit_entry(self, **args):
     print(f"entry is {self.entry}")
 
@@ -158,12 +150,10 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     if anvil.server.call("diary_add_entry", **self.entry):
       open_form(self.next_page)
     else:
-      alert("Something went wrong with submitting your entry, please try again later.")
-
-    # Any code you write here will run before the form opens.
+      alert("Something went wrong with submitting your entry.")
 
   #############################################################
-  # Note entry components (also used in other entries)
+  # Note entry components (also used in other entry types)
 
   def add_notes_entry(self, container, is_optional=True):
     # TODO come up with better phrasing here
@@ -209,7 +199,12 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
   #############################################################
   # Symptom entry components
   def add_symptom_entry(self, container):
-    container.add_component(Label(text="What was the symptom?"))
+    syptom_card = Card(appearance="filled")
+    container.add_component(syptom_card)
+    syptom_content = CardContentContainer()
+    syptom_card.add_component(syptom_content)
+    
+    syptom_content.add_component(Label(text="What was the symptom?"))
 
     recent_symptoms = anvil.server.call("diary_get_frequent_recent_symptoms")
     from_symptom_list = list(
@@ -229,8 +224,8 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     # TODO should also dismiss the suggestion box after enter
     symptom.add_event_handler("pressed_enter", self.set_symptom)
 
-    container.add_component(symptom)
-    container.add_component(Label(text="How severe was the symptom?"))
+    syptom_content.add_component(symptom)
+    syptom_content.add_component(Label(text="How severe was the symptom?"))
 
     default_severity = 3
     self.entry["symptom_severity"] = default_severity
