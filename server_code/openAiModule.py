@@ -109,7 +109,7 @@ def text_to_ingredients(food_text):
     openai_response = call_open_ai_and_get_ingredients(food_text)
     for food_diary_entry in openai_response.food_diary_entries:
       for dish in food_diary_entry.dishes:
-        dish_details = DishDetails(dish.name)
+        dish_details = DishDetails(dish_name=dish.name)
         dish_details.set_ingredients_from_lists(
           dish.ingredients,
           dish.ingredient_amounts,

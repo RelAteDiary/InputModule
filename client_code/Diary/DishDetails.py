@@ -3,7 +3,7 @@ from .IngredientDetails import IngredientDetails
 
 @anvil.server.portable_class
 class DishDetails:
-  def __init__(self, dish_name):
+  def __init__(self, dish_name=''):
     self.dish_name = dish_name
     self.ingredients = []
 

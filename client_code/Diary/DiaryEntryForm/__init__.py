@@ -37,6 +37,7 @@ from ..IngredientDetails import IngredientDetails
 from .IngredientRow import IngredientRow
 from .OrDivider import OrDivider
 
+
 # A form for entering diary entries.
 # Here are the entries that should be populated for each type:
 #   all  - time : datetime,
@@ -44,15 +45,16 @@ from .OrDivider import OrDivider
 #   note - note : str,
 #          note_color : str
 #   food - dishes : list of DishDetails,
-#          [optional] meal_freeform_text : str, 
+#          [optional] meal_freeform_text : str,
 #          [opitonal] note : str,
 #          [optional] note_color : str
 #   symptom - symptom : str,
-#          symptom_severity : float[0,5], 
+#          symptom_severity : float[0,5],
 #          [opitonal] note : str,
 #          [optional] note_color : str
+# TODO self.entry['symptom'] should be a list of Symptoms
 class DiaryEntryForm(DiaryEntryFormTemplate):
-  def __init__(self, type="symptom", **properties):
+  def __init__(self, type="food", **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.type = type
@@ -61,7 +63,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
     entry_content_container = CardContentContainer()
     self.add_component(entry_content_container)
-    
+
     self.add_date_entry_component(entry_content_container)
 
     if type == "symptom":
@@ -74,7 +76,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     self.add_buttons(entry_content_container)
 
   #############################################################
-  # Common components and helper functions
+  # Shared components and helper functions
 
   def set_consts(self):
     self.app_constants = Constants.Constants()
@@ -204,7 +206,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
   def select_note_color(self, **args):
     self.color_menu.icon_color = args["sender"].leading_icon_color
     self.entry["note_color"] = args["sender"].leading_icon_color
-  
+
   #############################################################
   # Symptom entry components
   def add_symptom_entry_fields(self, container):
@@ -212,7 +214,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     container.add_component(syptom_card)
     syptom_content = CardContentContainer()
     syptom_card.add_component(syptom_content)
-    
+
     syptom_content.add_component(Label(text="What was the symptom?"))
 
     recent_symptoms = anvil.server.call("diary_get_frequent_recent_symptoms")
@@ -269,10 +271,10 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
       format={"to": value_to_pip, "from": lambda v: v},
       role=["symptom-slider-spacer"],
     )
-    container.add_component(slider)
+    syptom_card.add_component(slider)
     slider.add_event_handler("change", self.slider_move)
     # Pips float awkwardly, so add a spacer to make it easier to
-    container.add_component(Spacer(height="40px"))
+    syptom_card.add_component(Spacer(height="40px"))
 
     self.upload_image(container)
 
@@ -321,12 +323,22 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
     entry_card_container.add_component(OrDivider())
 
-    entry_card_container.add_component(
-      Button(
-        text="+ Add dishes and ingredients manually",
-        align="center",
-        appearance="outlined",
-      )
+    manual_add_button = Button(
+      text="+ Add dishes and ingredients manually",
+      align="center",
+      appearance="outlined",
+    )
+    entry_card_container.add_component(manual_add_button)
+
+    dishes_container = FlowPanel()
+    container.add_component(dishes_container)
+
+    manual_add_button.add_event_handler(
+      "click",
+      lambda **args: self.make_dish_card(
+        dishes_container,
+        DishDetails()
+      ),
     )
 
     example_dish = DishDetails("apple pie")
@@ -336,9 +348,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
         IngredientDetails("sugar", "100", "g", 100, []),
       ]
     )
-    self.make_dish_card(container, example_dish)
+    print(container.parent)
+    self.make_dish_card(dishes_container, example_dish)
 
-    # container.add_component(Divider())
     self.upload_image(container)
     container.add_component(
       Button(text="Save and finish later", align="center", appearance="outlined")
@@ -346,11 +358,11 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
   def make_dish_card(self, container, dish_details):
     dish_card = Card()
-    container.add_component(dish_card)
+    container.add_component(dish_card, width='100%', index=0)
     dish_card_container = CardContentContainer()
     dish_card.add_component(dish_card_container)
 
-    dish_card_container.add_component(Label(text="I ate this food:"))
+    dish_card_container.add_component(Label(text="I ate this dish:"))
     dish_card_container.add_component(TextBox(text=dish_details.dish_name))
 
     for ingredient in dish_details.ingredients:
@@ -360,4 +372,6 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
         amount_and_unit=ingredient.amount + " " + ingredient.unit,
       )
       dish_card_container.add_component(ingredient_row)
-    dish_card_container.add_component(Button(align='center',text='+ Add ingredient', appearance='text'))
+    dish_card_container.add_component(
+      Button(align="center", text="+ Add ingredient", appearance="text")
+    )
