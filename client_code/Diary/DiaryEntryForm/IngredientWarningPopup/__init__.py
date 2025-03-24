@@ -8,7 +8,6 @@ class IngredientWarningPopup(IngredientWarningPopupTemplate):
   def __init__(
     self, ingredient_name="food", dietary_conflicts=["test1", "test2"], **properties
   ):
-    # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.add_component(
       Label(
@@ -30,4 +29,3 @@ class IngredientWarningPopup(IngredientWarningPopupTemplate):
         ),
       )
 
-    # Any code you write here will run before the form opens.

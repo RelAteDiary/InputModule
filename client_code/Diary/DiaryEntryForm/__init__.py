@@ -33,7 +33,7 @@ from ... import Constants
 from ..DishDetails import DishDetails
 from ..IngredientDetails import IngredientDetails
 
-
+from .IngredientEditPopup import IngredientEditPopup
 from .IngredientRow import IngredientRow
 from .OrDivider import OrDivider
 
@@ -335,10 +335,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
     manual_add_button.add_event_handler(
       "click",
-      lambda **args: self.make_dish_card(
-        dishes_container,
-        DishDetails()
-      ),
+      lambda **args: self.make_dish_card(dishes_container, DishDetails()),
     )
 
     example_dish = DishDetails("apple pie")
@@ -358,13 +355,15 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
   def make_dish_card(self, container, dish_details):
     dish_card = Card()
-    container.add_component(dish_card, width='100%', index=0)
+    container.add_component(dish_card, width="100%", index=0)
     dish_card_container = CardContentContainer()
     dish_card.add_component(dish_card_container)
 
     dish_card_container.add_component(Label(text="I ate this dish:"))
     dish_card_container.add_component(TextBox(text=dish_details.dish_name))
 
+    # !!! TODO put this inside a panel so that new ingredients are appended at 
+    # the end instead of below button
     for ingredient in dish_details.ingredients:
       ingredient_row = IngredientRow(
         ingredient=ingredient.ingredient_name,
@@ -372,6 +371,24 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
         amount_and_unit=ingredient.amount + " " + ingredient.unit,
       )
       dish_card_container.add_component(ingredient_row)
-    dish_card_container.add_component(
-      Button(align="center", text="+ Add ingredient", appearance="text")
+
+    add_ingredient_button = Button(
+      align="center", text="+ Add ingredient", appearance="text"
     )
+    dish_card_container.add_component(add_ingredient_button)
+    add_ingredient_button.add_event_handler(
+      "click", lambda **args: self.add_ingredient_click(dish_card_container)
+    )
+
+  def ingredient_to_ingredient_row(self):
+    pass
+
+  def add_ingredient_click(self, container):
+    ingredient = alert(content=IngredientEditPopup(), buttons=[])
+    ingredient_row = IngredientRow(
+      ingredient=ingredient.ingredient_name,
+      violates_diets=[],
+      amount_and_unit=str(ingredient.amount) + " " + ingredient.unit,
+    )
+    # TODO async call to see if ingredient is okay
+    container.add_component(ingredient_row)
