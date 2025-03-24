@@ -1,5 +1,5 @@
 from ._anvil_designer import IngredientEditPopupTemplate
-from anvil import Label, TextBox
+from anvil import Label, TextBox, FlowPanel, DropDown
 
 
 class IngredientEditPopup(IngredientEditPopupTemplate):
@@ -16,10 +16,21 @@ class IngredientEditPopup(IngredientEditPopupTemplate):
 
     self.add_component(Label('In this quantity:'))
     quantity_panel = FlowPanel()
-    self.add_component()
+    self.add_component(quantity_panel)
+    amount = TextBox(type='number')
+    quantity_panel.add_component(amount, width='50%')
+    amount.add_event_handler('lost_focus', self.set_amount)
+    unit = DropDown(items=self.get_unit_choices(self.unit), selected_value=self.unit)
+    quantity_panel.add_component(unit, width='50%')
 
-  def get_default_units(self):
-    return ['', 'tsp', 'tbsp', 'cups', 'oz', 'lb', 'g', 'piece','slice']
+  def get_unit_choices(self, current_unit=None):
+    default_units = ['', 'tsp', 'tbsp', 'cups', 'oz', 'lb', 'g', 'piece','slice']
+    if current_unit is not None and default_units.count(current_unit) == 0:
+      return [current_unit] + default_units
+    else:
+      return default_units
 
   def set_ingredient(self,  **args):
     self.ingredient = args['sender'].text
+
+  def 
