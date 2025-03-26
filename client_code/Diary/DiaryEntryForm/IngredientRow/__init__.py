@@ -6,7 +6,7 @@ from ..IngredientWarningPopup import IngredientWarningPopup
 class IngredientRow(IngredientRowTemplate):
   def __init__(
     self,
-    voilates_diets=["test_diet"],
+    voilates_diets=[],
     amount_and_unit="1 serving",
     ingredient="food",
     **properties,
