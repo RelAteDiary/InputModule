@@ -362,22 +362,22 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     dish_card_container.add_component(Label(text="I ate this dish:"))
     dish_card_container.add_component(TextBox(text=dish_details.dish_name))
 
-    # !!! TODO put this inside a panel so that new ingredients are appended at 
-    # the end instead of below button
+    ingredients_container = CardContentContainer(margin='0px')
+    dish_card_container.add_component(ingredients_container)
     for ingredient in dish_details.ingredients:
       ingredient_row = IngredientRow(
         ingredient=ingredient.ingredient_name,
         voilates_diets=ingredient.violates_diets,
         amount_and_unit=ingredient.amount + " " + ingredient.unit,
       )
-      dish_card_container.add_component(ingredient_row)
+      ingredients_container.add_component(ingredient_row)
 
     add_ingredient_button = Button(
       align="center", text="+ Add ingredient", appearance="text"
     )
     dish_card_container.add_component(add_ingredient_button)
     add_ingredient_button.add_event_handler(
-      "click", lambda **args: self.add_ingredient_click(dish_card_container)
+      "click", lambda **args: self.add_ingredient_click(ingredients_container)
     )
 
   def ingredient_to_ingredient_row(self):
