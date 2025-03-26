@@ -362,13 +362,14 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     dish_card_container.add_component(Label(text="I ate this dish:"))
     dish_card_container.add_component(TextBox(text=dish_details.dish_name))
 
-    ingredients_container = CardContentContainer(margin='0px')
+    ingredients_container = CardContentContainer(margin="0px")
     dish_card_container.add_component(ingredients_container)
     for ingredient in dish_details.ingredients:
       ingredient_row = IngredientRow(
-        ingredient=ingredient.ingredient_name,
-        voilates_diets=ingredient.violates_diets,
-        amount_and_unit=ingredient.amount + " " + ingredient.unit,
+        ingredient_name=ingredient.ingredient_name,
+        violates_diets=ingredient.violates_diets,
+        amount=ingredient.amount,
+        unit=ingredient.unit,
       )
       ingredients_container.add_component(ingredient_row)
 
@@ -386,9 +387,10 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
   def add_ingredient_click(self, container):
     ingredient = alert(content=IngredientEditPopup(), buttons=[])
     ingredient_row = IngredientRow(
-      ingredient=ingredient.ingredient_name,
+      ingredient_name=ingredient.ingredient_name,
       violates_diets=[],
-      amount_and_unit=str(ingredient.amount) + " " + ingredient.unit,
+      amount=ingredient.amount,
+      unit=ingredient.unit,
     )
     # TODO async call to see if ingredient is okay
     container.add_component(ingredient_row)

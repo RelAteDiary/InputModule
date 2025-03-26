@@ -1,0 +1,40 @@
+components: []
+container:
+  properties:
+    html: |
+      <center style="font-style: italic; color: #888; margin: 0">
+        <style>
+          .meal_ingredient_row_table {
+            width: 100%;
+            table-layout: fixed;
+            text-align: center;
+          }
+          .warning-button {
+            border-radius: 5000px;
+            border: 0px;
+            background: rgba(255, 255, 255, 0.5);
+            color: red;
+          }
+        </style>
+        <table class="meal_ingredient_row_table">
+          <tbody>
+            <tr>
+              <!-- <td anvil-name="warning" style="width: 15%">
+                <img src="_/theme/material_icons/red_warning.svg" />
+              </td> -->
+              <td anvil-name="warning-column" style="width: 10%">
+                <button class="warning-button" anvil-name="warning-button">
+                  <i class="material-symbols-outlined">warning</i>
+                </button>
+              </td>
+              <td anvil-name="quantity-column">2 slices</td>
+              <td anvil-name="food-column">bread</td>
+              <td anvil-name="edit-column" style="width: 15%"><a style="color: orange">edit</a></td>
+              <td anvil-name="delete-column" style="width: 15%"><a style="color: red;">delete</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </center>
+      <div anvil-slot="default"></div>
+  type: HtmlTemplate
+is_package: true
