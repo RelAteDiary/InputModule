@@ -34,5 +34,5 @@ class IngredientRowNew(IngredientRowNewTemplate):
     self.flow_panel_1.add_component(de, width="15%")
 
   def set_violates_diets(self, diets):
-    if len(diets):
-      
+    if len(diets) > 0:
+      pass
