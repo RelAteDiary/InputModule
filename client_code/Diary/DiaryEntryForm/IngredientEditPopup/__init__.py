@@ -22,7 +22,7 @@ class IngredientEditPopup(IngredientEditPopupTemplate):
     self.add_component(quantity_panel)
     amount = TextBox(text=quantity, type="number")
     quantity_panel.add_component(amount, width="40%")
-    amount.add_event_handler("lost_focus", self.set_amount)
+    amount.add_event_handler("lost_focus", self.set_quantity)
     unit = DropDown(items=self.get_unit_choices(self.unit), selected_value=self.unit)
     quantity_panel.add_component(unit, width="40%")
     unit.add_event_handler("change", self.set_unit)
@@ -30,7 +30,7 @@ class IngredientEditPopup(IngredientEditPopupTemplate):
     button_panel = FlowPanel(align="center")
     self.add_component(button_panel)
 
-    discard_button = Button(text="Discard", appearance='outlined')
+    discard_button = Button(text="Discard", appearance="outlined")
     button_panel.add_component(discard_button)
     discard_button.add_event_handler(
       "click",
@@ -41,11 +41,12 @@ class IngredientEditPopup(IngredientEditPopupTemplate):
     button_panel.add_component(save_button)
     save_button.add_event_handler(
       "click",
-      lambda **args: self.raise_event(
-        "x-close-alert",
-        value=IngredientDetails(self.ingredient, self.quantity, self.unit, None, None),
-      ),
+      lambda **args: self.raise_event("x-close-alert", value=self.to_ingredient_details()),
     )
+
+  def to_ingredient_details(self):
+    # TODO violate diet should be checked!
+    return IngredientDetails(self.ingredient, self.quantity, self.unit, None, None)
 
   def get_unit_choices(self, current_unit=None):
     default_units = ["", "tsp", "tbsp", "cups", "oz", "lb", "g", "piece", "slice"]
@@ -57,8 +58,8 @@ class IngredientEditPopup(IngredientEditPopupTemplate):
   def set_ingredient(self, **args):
     self.ingredient = args["sender"].text
 
-  def set_amount(self, **args):
-    self.amount = args["sender"].text
+  def set_quantity(self, **args):
+    self.quantity = args["sender"].text
 
   def set_unit(self, **args):
     self.unit = args["sender"].selected_value
