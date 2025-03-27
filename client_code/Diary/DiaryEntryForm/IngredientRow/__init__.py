@@ -22,6 +22,9 @@ class IngredientRow(IngredientRowTemplate):
     self.unit = unit
     self.violates_diets = violates_diets
 
+    self.amount_and_unit_column = None
+    self.ingredient_name_column = None
+
     # The warning button that shows if this ingredient conflicts with a diet
     self.warn = None
 
