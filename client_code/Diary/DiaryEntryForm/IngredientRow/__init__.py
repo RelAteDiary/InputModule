@@ -49,11 +49,9 @@ class IngredientRow(IngredientRowTemplate):
       quantity=amount,
       unit=unit,
     )
-    edit_popup.add_event_handler("x-close-alert", lambda **args: print("closed"))
-
     edit.add_event_handler(
       "click",
-      lambda **args: alert(content=edit_popup, buttons=[]),
+      lambda **args: print(alert(content=edit_popup, buttons=[])),
     )
     delete = IconButton(icon="mi-delete", align="center")
     flow_panel.add_component(delete, width="15%")
@@ -76,3 +74,10 @@ class IngredientRow(IngredientRowTemplate):
         ),
       )
       self.maybe_warn.add_component(self.warn)
+
+  def update_row(self, ingredient, update_violates_diets=False):
+    self.ingredient_name = ingredient.ingredient_name
+    self.amount=ingredient.amount
+    self.unit=ingredient.unit
+    if update_violates_diets:
+      self.violates_diets=ingredient.violates_diets
