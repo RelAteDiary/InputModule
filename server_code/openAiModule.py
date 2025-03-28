@@ -5,7 +5,7 @@ import anvil.server
 from pydantic import BaseModel
 from openai import OpenAI
 
-from .Diary import DishDetails
+from .Diary.DishDetails import DishDetails
 
 openai_client = OpenAI(api_key=anvil.secrets.get_secret("openai_api_key"))
 
@@ -27,19 +27,19 @@ class MealFormat(BaseModel):
 
 
 FETCH_INGREDIENTS_PROMPT = """
-You will fetch the common basic ingredients for the food given in a short string. If the dish specifies a quantity or unit of measurement, use that; otherwise use one reasonable serving as the size of the dish. Prioritize familiarity when choosing unit of measurement for an ingredient. 
+You will fetch the common basic ingredients for the food given in a short string. If the dish specifies a quantity or unit of measurement, use that; otherwise use one reasonable serving as the size of the dish. Use a reasonable unit of measurement for an ingredient, priority to volume measurements like cup, tablespoon, teaspoon. 
 Return it as JSON with the following fields: dishes.
 Where dishes is a list of DishModel, a JSON with the following fields:
 name, ingredients, ingredient_amounts, ingredient_units,ingredient_amount_in_grams.
 name is a string representing the food that the user gave you.
 ingredients is a list of strings of the common ingredients for that food.
-ingredient_amounts and ingredient_units are two lists that represent the amount found in a typical serving size of the food as a number and the unit of measurement for that serving as a string.
+ingredient_amounts and ingredient_units are two lists that represent the amount found in a typical single serving size (i.e. what one person can reasonably eat in one sitting) of the food as a number and the unit of measurement for that serving as a string.
 ingredient_amount_in_grams is the amount in a typical serving in grams; this should match the amount specified in ingredient_amounts and ingredient_units.
 If there is no food, then return an empty list. If you are not able to fetch ingredients of a food, leave ingredients, ingredient_amounts, ingredient_units, ingredient_amount_in_grams blank but fill in name.
 """
 
 
-def call_open_ai_and_get_ingredients(food_text, is_unit_test=True):
+def call_open_ai_and_get_ingredients(food_text, is_unit_test=False):
   if is_unit_test:
     return MealFormat(
       food_diary_entries=[
@@ -105,7 +105,7 @@ def text_to_ingredients(food_text):
   Uses O(750) tokens per call.
   """
   try:
-    dish_details = []
+    dish_details_list = []
     openai_response = call_open_ai_and_get_ingredients(food_text)
     for food_diary_entry in openai_response.food_diary_entries:
       for dish in food_diary_entry.dishes:
@@ -116,8 +116,8 @@ def text_to_ingredients(food_text):
           dish.ingredient_units,
           dish.ingredient_amount_in_grams,
         )
-        dish_details.append(dish_details)
+        dish_details_list.append(dish_details)
     print(f"openai_response is {openai_response}")
-    return dish_details
+    return dish_details_list
   except (ValueError, KeyError):
     print("Automatically generating ingredients is not possible right now. Sorry!")

@@ -14,14 +14,14 @@ from m3.components import (
   TextBox,
   InteractiveCard,
   Divider,
+  Heading,
+  Text
 )
 from anvil import (
-  Label,
   DatePicker,
   DataGrid,
   ColumnPanel,
   FlowPanel,
-  RichText,
   DropDown,
   FileLoader,
   Image,
@@ -105,7 +105,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     else:
       datetime_message = "When did this happen?"
 
-    container.add_component(Label(text=datetime_message))
+    container.add_component(Text(text=datetime_message))
     # by default select now as the time
     now = datetime.now()
     date_component = DatePicker(pick_time=True, date=now)
@@ -117,7 +117,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     self.entry["time"] = args["sender"].date
 
   def upload_image(self, container):
-    container.add_component(Label(text="(OPTIONAL) Add a photo."))
+    container.add_component(Text(text="(OPTIONAL) Add a photo."))
 
     upload_image = FileLoader(
       multiple=False, file_types=".png, .jpg, .jpeg", icon="fa:camera"
@@ -183,7 +183,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
   def add_notes_entry_fields(self, container, is_optional=True):
     # TODO come up with better phrasing here
     container.add_component(
-      Label(
+      Text(
         text=("(OPTIONAL) " if is_optional else "")
         + "You can make a note of any thing interesting here, "
         + "though it won't be analyzed automatically."
@@ -195,7 +195,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
     # TODO this may be better as a flow panel instead of a dropdown
     container.add_component(
-      Label(text="(OPTIONAL) Add a color to this note to stay organized.")
+      Text(text="(OPTIONAL) Add a color to this note to stay organized.")
     )
     self.color_menu = ButtonMenu(
       text="Note color", appearance="outlined", icon="mi:circle", icon_color="#000000"
@@ -229,7 +229,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     syptom_content = CardContentContainer()
     syptom_card.add_component(syptom_content)
 
-    syptom_content.add_component(Label(text="What was the symptom?"))
+    syptom_content.add_component(Text(text="What was the symptom?"))
 
     recent_symptoms = anvil.server.call("diary_get_frequent_recent_symptoms")
     from_symptom_list = list(
@@ -250,7 +250,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     symptom.add_event_handler("pressed_enter", self.set_symptom)
 
     syptom_content.add_component(symptom)
-    syptom_content.add_component(Label(text="How severe was the symptom?"))
+    syptom_content.add_component(Text(text="How severe was the symptom?"))
 
     default_severity = 3
     self.entry["symptom_severity"] = default_severity
@@ -312,8 +312,8 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     entry_card_container = CardContentContainer()
     entry_card.add_component(entry_card_container)
 
-    entry_card_container.add_component(RichText(content="# What did you eat? "))
-    entry_card_container.add_component(Label(text="Describe your meal:"))
+    entry_card_container.add_component(Heading(text="What did you eat?"))
+    entry_card_container.add_component(Text(text="Describe your meal:"))
     food_description_text = TextArea(
       auto_expand=True,
       placeholder='E.g. "chicken soup and sourdough bread with fruit bowl"',
@@ -331,7 +331,7 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     entry_card_container.add_component(OrDivider())
 
     entry_card_container.add_component(
-      Label(text="Choose dishes from your recent meals.")
+      Text(text="Choose dishes from your recent meals.")
     )
     # TODO populate chips from recent
     recent_meals = FlowPanel(align="left")
@@ -376,7 +376,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     )
 
   def get_dishes_from_description(self, description, dish_entry_container):
-    if 
+    print(f'description is {description}')
+    if anvil.users.get_user() is None:
+      anvil.users.login_with_form()
     try:
       dishes = anvil.server.call("text_to_ingredients", description)
     # TODO this exception should be more informative.
@@ -390,4 +392,4 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
       )
     for dish in dishes:
       dish_entry_card = DishEntryCard(dish)
-      dish_entry_card.add_component(dish_entry_card)
+      dish_entry_container.add_component(dish_entry_card)

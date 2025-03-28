@@ -4,7 +4,7 @@ from ...IngredientDetails import IngredientDetails
 from anvil import Label, TextBox, FlowPanel, DropDown
 from m3.components import Button
 
-
+# TODO add a convert unit feature
 class IngredientEditPopup(IngredientEditPopupTemplate):
   def __init__(self, ingredient="", quantity=1, unit="", **properties):
     self.ingredient = ingredient

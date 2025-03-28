@@ -1,6 +1,6 @@
 from ._anvil_designer import DishEntryCardTemplate
 from m3.components import Button, CardContentContainer, Card
-from anvil import Label, TextBox, alert
+from anvil import Label, TextArea, alert, FlowPanel
 from anvil_extras.animation import pulse, Effect
 
 from ..IngredientRow import IngredientRow
@@ -24,7 +24,7 @@ class DishEntryCard(DishEntryCardTemplate):
     dish_card.add_component(dish_card_container)
 
     dish_card_container.add_component(Label(text="I ate this dish:"))
-    self.dish_name_textbox = TextBox(
+    self.dish_name_textbox = TextArea(
       text=dish_details.dish_name, placeholder="E.g. Chicken soup"
     )
     dish_card_container.add_component(self.dish_name_textbox)
@@ -58,16 +58,29 @@ class DishEntryCard(DishEntryCardTemplate):
       lambda **args: self.add_ingredient_button_click(self.ingredients_container),
     )
 
+    buttons_panel = FlowPanel(align='center')
+    dish_card_container.add_component(buttons_panel)
+    
     delete_card_button = Button(
-      align="center",
       text="Delete this dish",
       appearance="outlined",
       icon="mi:delete",
       icon_align="left",
     )
-    dish_card_container.add_component(delete_card_button)
+    buttons_panel.add_component(delete_card_button)
     delete_card_button.add_event_handler(
       "click", lambda **args: dish_card.remove_from_parent()
+    )
+
+    add_to_collection_button = Button(
+      text="Save to my collection",
+      appearance='tonal',
+      icon="mi:bookmark",
+      icon_align="left",)
+    buttons_panel.add_component(add_to_collection_button)
+    # TODO impl this button
+    add_to_collection_button.add_event_handler(
+      "click", lambda **args: print('add to collection')
     )
 
   def add_ingredient_button_click(self, container):
