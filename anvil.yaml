@@ -1,5 +1,10 @@
 allow_embedding: false
 db_schema:
+  cache:
+    client: none
+    columns: []
+    server: full
+    title: Cache
   diary:
     client: none
     columns:
