@@ -24,16 +24,21 @@ class DishEntryCard(DishEntryCardTemplate):
     dish_card.add_component(dish_card_container)
 
     dish_card_container.add_component(Label(text="I ate this dish:"))
-    self.dish_name_textbox = TextBox(text=dish_details.dish_name)
+    self.dish_name_textbox = TextBox(
+      text=dish_details.dish_name, placeholder="E.g. Chicken soup"
+    )
     dish_card_container.add_component(self.dish_name_textbox)
     self.fill_in_dish_name_prompt = Label(
       text="Please give this dish a name", visible=False, foreground="red"
     )
     dish_card_container.add_component(self.fill_in_dish_name_prompt)
+
     def make_prompt_invisible():
       self.fill_in_dish_name_prompt.visible = False
+
     self.dish_name_textbox.add_event_handler(
-      'lost_focus', lambda **args : make_prompt_invisible())
+      "lost_focus", lambda **args: make_prompt_invisible()
+    )
 
     self.ingredients_container = CardContentContainer(margin="0px")
     dish_card_container.add_component(self.ingredients_container)

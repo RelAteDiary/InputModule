@@ -21,6 +21,7 @@ from anvil import (
   DataGrid,
   ColumnPanel,
   FlowPanel,
+  RichText,
   DropDown,
   FileLoader,
   Image,
@@ -159,11 +160,11 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
         alert("Please enter at least one dish")
         return
       for dish in dishes:
-        if dish.to_dish_details().dish_name == '':
+        if dish.to_dish_details().dish_name == "":
           dish.scroll_into_view()
           dish.highlight_dish_name_textbox()
           return
-      self.entry['dishes'] = [dish.to_dish_details() for dish in dishes]
+      self.entry["dishes"] = [dish.to_dish_details() for dish in dishes]
     if self.type == "symptom" and not self.entry.get("symptom"):
       alert("Please fill in the symptom")
       return
@@ -311,15 +312,20 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     entry_card_container = CardContentContainer()
     entry_card.add_component(entry_card_container)
 
-    entry_card_container.add_component(
-      Label(
-        text="What did you eat? "
-        + 'E.g. "chicken soup and sourdough bread with fruit bowl"'
-      )
+    entry_card_container.add_component(RichText(content="# What did you eat? "))
+    entry_card_container.add_component(Label(text="Describe your meal:"))
+    food_description_text = TextArea(
+      auto_expand=True,
+      placeholder='E.g. "chicken soup and sourdough bread with fruit bowl"',
     )
-    entry_card_container.add_component(TextArea(auto_expand=True))
-    entry_card_container.add_component(
-      Button(text="Draft my food diary entry for me", align="center")
+    entry_card_container.add_component(food_description_text)
+    draft_entry_button = Button(text="Draft my food diary entry for me", align="center")
+    entry_card_container.add_component(draft_entry_button)
+    draft_entry_button.add_event_handler(
+      "click",
+      lambda **args: self.get_dishes_from_description(
+        food_description_text.text, self.dishes_container
+      ),
     )
 
     entry_card_container.add_component(OrDivider())
@@ -350,7 +356,9 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
 
     manual_add_button.add_event_handler(
       "click",
-      lambda **args: self.dishes_container.add_component(DishEntryCard(DishDetails()), index=0),
+      lambda **args: self.dishes_container.add_component(
+        DishEntryCard(DishDetails()), index=0
+      ),
     )
 
     example_dish = DishDetails("apple pie")
@@ -366,3 +374,20 @@ class DiaryEntryForm(DiaryEntryFormTemplate):
     container.add_component(
       Button(text="Save and finish later", align="center", appearance="outlined")
     )
+
+  def get_dishes_from_description(self, description, dish_entry_container):
+    if 
+    try:
+      dishes = anvil.server.call("text_to_ingredients", description)
+    # TODO this exception should be more informative.
+    except (ValueError, KeyError):
+      alert(
+        content="Something went wrong and we can't generate your dishes for to automatically right now. Please make sure you are signed in."
+      )
+    if len(dishes) == 0:
+      alert(
+        content="We couldn't find any dishes in your description. Please try rephrasing."
+      )
+    for dish in dishes:
+      dish_entry_card = DishEntryCard(dish)
+      dish_entry_card.add_component(dish_entry_card)
