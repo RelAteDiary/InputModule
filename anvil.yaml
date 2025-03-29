@@ -2,7 +2,16 @@ allow_embedding: false
 db_schema:
   cache:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: food_name
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: fodmap_serving_gram
+      type: number
+    - admin_ui: {order: 2, width: 200}
+      name: alpha_gal_safe
+      type: string
     server: full
     title: Cache
   diary:
@@ -139,6 +148,9 @@ dependencies:
 - dep_id: dep_2s2y4uk691mcjxe
   resolution_hints: {app_id: C6ZZPAPN4YYF5NVJ, name: Anvil Extras, package_name: anvil_extras}
   version: {version_tag: v3.1.0}
+- dep_id: dep_8jrgfbqvcd3hxi
+  resolution_hints: {app_id: 5YU7BBT6T5O7ZNOX, name: Anvil Labs, package_name: anvil_labs}
+  version: {branch: master}
 metadata: {title: relATE}
 name: relATE
 native_deps:
