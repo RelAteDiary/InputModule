@@ -3,6 +3,7 @@ from ._anvil_designer import DiaryEntryFormTemplate
 
 from datetime import datetime
 from anvil_extras import Slider, Autocomplete, Chip
+from anvil_labs.non_blocking import call_async
 import anvil.server
 from m3.components import (
   Card,
