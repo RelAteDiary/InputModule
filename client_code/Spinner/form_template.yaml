@@ -1,0 +1,23 @@
+components: []
+container:
+  properties:
+    html: |
+      <center style="font-style: italic; color: #888">
+        <style>
+          .w3-spin {
+            animation: w3-spin 2s infinite linear;
+          }
+          @keyframes w3-spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(359deg);
+            }
+          }
+        </style>
+        <p><i class="fa fa-gear w3-spin" style="font-size: 20px"></i></p>
+      </center>
+      <div anvil-slot="default"></div>
+  type: HtmlTemplate
+is_package: true

@@ -121,3 +121,8 @@ def text_to_ingredients(food_text):
     return dish_details_list
   except (ValueError, KeyError):
     print("Automatically generating ingredients is not possible right now. Sorry!")
+
+@anvil.server.callable(require_user=True)
+def ingredient_is_safe(ingredient):
+  diet_restrictions = get_diet_restriction()
+  
