@@ -74,14 +74,17 @@ db_schema:
     - admin_ui: {order: 0, width: 200}
       name: food_name
       type: string
-    - admin_ui: {order: 1, width: 200}
-      name: fodmap_friendly
-      type: number
     - admin_ui: {order: 2, width: 200}
       name: alpha_gal_safe
       type: string
     - admin_ui: {order: 1.5, width: 200}
-      name: fodmap_citation
+      name: fodmap_authoritative_citation
+      type: string
+    - admin_ui: {order: 1.75, width: 200}
+      name: fodmap_unsafe_user_report_count
+      type: number
+    - admin_ui: {order: 1.25, width: 200}
+      name: fodmap_friendly
       type: string
     server: full
     title: IngredientDietSuitabilityCache
@@ -95,6 +98,9 @@ db_schema:
     - admin_ui: {order: 1, width: 200}
       name: intolerance
       type: string
+    - admin_ui: {order: 2, width: 200}
+      name: intolerance_2
+      type: simpleObject
     server: full
     title: Intolerances
   users:
