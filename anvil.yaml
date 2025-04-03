@@ -1,19 +1,5 @@
 allow_embedding: false
 db_schema:
-  cache:
-    client: none
-    columns:
-    - admin_ui: {order: 0, width: 200}
-      name: food_name
-      type: string
-    - admin_ui: {order: 1, width: 200}
-      name: fodmap_serving_gram
-      type: number
-    - admin_ui: {order: 2, width: 200}
-      name: alpha_gal_safe
-      type: string
-    server: full
-    title: Cache
   diary:
     client: none
     columns:
@@ -82,6 +68,23 @@ db_schema:
       type: datetime
     server: full
     title: feedback table
+  ingredientdietsuitabilitycache:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: food_name
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: fodmap_friendly
+      type: number
+    - admin_ui: {order: 2, width: 200}
+      name: alpha_gal_safe
+      type: string
+    - admin_ui: {order: 1.5, width: 200}
+      name: fodmap_citation
+      type: string
+    server: full
+    title: IngredientDietSuitabilityCache
   intolerances:
     client: none
     columns:

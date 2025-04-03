@@ -129,5 +129,7 @@ def get_diet_restriction():
 @anvil.server.callable(require_user=True)
 def ingredient_is_safe(ingredient):
   diet_restrictions = get_diet_restriction()
+
+  cached_
   
   
