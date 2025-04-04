@@ -149,10 +149,7 @@ db_schema:
       name: p-ack_non_med_disclaimer
       type: bool
     - admin_ui: {order: 14, width: 200}
-      name: p-avoided_foods_and_ingredients
-      type: string
-    - admin_ui: {order: 15, width: 200}
-      name: p-safe_foods_and_ingredients
+      name: p-accepted_limited_excluded_foods
       type: string
     server: full
     title: Users
